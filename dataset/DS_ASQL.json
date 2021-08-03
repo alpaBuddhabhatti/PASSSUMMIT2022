@@ -1,0 +1,19 @@
+{
+	"name": "DS_ASQL",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "LS_ASQL",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "DEMO 1"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [],
+		"typeProperties": {
+			"table": "EMP"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

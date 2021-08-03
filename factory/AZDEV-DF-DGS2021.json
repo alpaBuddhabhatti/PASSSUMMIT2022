@@ -1,0 +1,9 @@
+{
+	"name": "AZDEV-DF-DGS2021",
+	"location": "uksouth",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "26162223-2f56-4657-9381-76953603136e",
+		"tenantId": "b00367e2-193a-4f48-94de-7245d45c0947"
+	}
+}
