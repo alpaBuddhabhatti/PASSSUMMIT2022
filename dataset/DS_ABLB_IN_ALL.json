@@ -5,6 +5,9 @@
 			"referenceName": "LS_ABLB",
 			"type": "LinkedServiceReference"
 		},
+		"folder": {
+			"name": "DEMO 3"
+		},
 		"annotations": [],
 		"type": "DelimitedText",
 		"typeProperties": {
