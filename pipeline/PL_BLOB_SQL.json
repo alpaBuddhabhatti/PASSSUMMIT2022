@@ -3,11 +3,11 @@
 	"properties": {
 		"activities": [
 			{
-				"name": "ForEach1",
+				"name": "For Each File",
 				"type": "ForEach",
 				"dependsOn": [
 					{
-						"activity": "Get Metadata1",
+						"activity": "Get All Files",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -15,6 +15,11 @@
 				],
 				"userProperties": [],
 				"typeProperties": {
+					"items": {
+						"value": "@activity('Get All Files').output.childitems",
+						"type": "Expression"
+					},
+					"batchCount": 2,
 					"activities": [
 						{
 							"name": "Copy data",
@@ -35,7 +40,7 @@
 										"type": "AzureBlobStorageReadSettings",
 										"recursive": true,
 										"wildcardFileName": {
-											"value": "@pipeline().parameters.FileName",
+											"value": "@item().name",
 											"type": "Expression"
 										},
 										"enablePartitionDiscovery": false
@@ -71,7 +76,7 @@
 									"type": "DatasetReference",
 									"parameters": {
 										"TableName": {
-											"value": "@pipeline().parameters.TableName",
+											"value": "@split(item().name,'.csv')",
 											"type": "Expression"
 										}
 									}
@@ -82,7 +87,7 @@
 				}
 			},
 			{
-				"name": "Get Metadata1",
+				"name": "Get All Files",
 				"type": "GetMetadata",
 				"dependsOn": [],
 				"policy": {
