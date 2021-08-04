@@ -11,6 +11,12 @@
 						"dependencyConditions": [
 							"Succeeded"
 						]
+					},
+					{
+						"activity": "Set rundate",
+						"dependencyConditions": [
+							"Succeeded"
+						]
 					}
 				],
 				"userProperties": [],
@@ -32,10 +38,23 @@
 								"secureOutput": false,
 								"secureInput": false
 							},
-							"userProperties": [],
+							"userProperties": [
+								{
+									"name": "Source",
+									"value": "file-in//events.csv"
+								},
+								{
+									"name": "Destination",
+									"value": ".@{split(item().name,'.csv')}"
+								}
+							],
 							"typeProperties": {
 								"source": {
 									"type": "DelimitedTextSource",
+									"additionalColumns": {
+										"type": "Expression",
+										"value": "@variables('strvalue')"
+									},
 									"storeSettings": {
 										"type": "AzureBlobStorageReadSettings",
 										"recursive": true,
@@ -52,6 +71,7 @@
 								"sink": {
 									"type": "AzureSqlSink",
 									"writeBehavior": "insert",
+									"tableOption": "autoCreate",
 									"disableMetricsCollection": false
 								},
 								"enableStaging": false,
@@ -114,8 +134,26 @@
 						"type": "DelimitedTextReadSettings"
 					}
 				}
+			},
+			{
+				"name": "Set rundate",
+				"type": "SetVariable",
+				"dependsOn": [],
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "strvalue",
+					"value": {
+						"value": "@utcnow()",
+						"type": "Expression"
+					}
+				}
 			}
 		],
+		"variables": {
+			"strvalue": {
+				"type": "String"
+			}
+		},
 		"folder": {
 			"name": "DEMO 3"
 		},
