@@ -116,14 +116,6 @@
 				}
 			}
 		],
-		"parameters": {
-			"FileName": {
-				"type": "string"
-			},
-			"TableName": {
-				"type": "string"
-			}
-		},
 		"folder": {
 			"name": "DEMO 3"
 		},
