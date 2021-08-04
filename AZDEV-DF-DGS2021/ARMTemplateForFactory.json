@@ -99,10 +99,6 @@
 									"typeProperties": {
 										"source": {
 											"type": "DelimitedTextSource",
-											"additionalColumns": {
-												"type": "Expression",
-												"value": "@variables('strvalue')"
-											},
 											"storeSettings": {
 												"type": "AzureBlobStorageReadSettings",
 												"recursive": true,
@@ -119,7 +115,6 @@
 										"sink": {
 											"type": "AzureSqlSink",
 											"writeBehavior": "insert",
-											"tableOption": "autoCreate",
 											"disableMetricsCollection": false
 										},
 										"enableStaging": false,
