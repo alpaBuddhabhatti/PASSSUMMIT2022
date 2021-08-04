@@ -5,6 +5,9 @@
 			"referenceName": "LS_ASQL",
 			"type": "LinkedServiceReference"
 		},
+		"folder": {
+			"name": "DEMO 2"
+		},
 		"annotations": [],
 		"type": "AzureSqlTable",
 		"schema": [],
