@@ -1,0 +1,118 @@
+{
+	"$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"type": "string",
+			"metadata": "Data Factory name",
+			"defaultValue": "AZDEV-DF-DGS2021"
+		},
+		"LS_SF_password": {
+			"type": "secureString",
+			"metadata": "Secure string for 'password' of 'LS_SF'"
+		},
+		"LS_SF_securityToken": {
+			"type": "secureString",
+			"metadata": "Secure string for 'securityToken' of 'LS_SF'"
+		},
+		"LS_ABLB_properties_typeProperties_connectionString_secretName": {
+			"type": "string",
+			"defaultValue": "ABLB-CONNECTION"
+		},
+		"LS_ASQL_properties_typeProperties_connectionString_secretName": {
+			"type": "string",
+			"defaultValue": "ASQL-DB-CONNECTION"
+		},
+		"LS_KV_properties_typeProperties_baseUrl": {
+			"type": "string",
+			"defaultValue": "https://AZDEV-KV-DGS2021.vault.azure.net/"
+		},
+		"LS_REST_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://dummy.restapiexample.com/api/v1/employees"
+		},
+		"LS_SF_properties_typeProperties_environmentUrl": {
+			"type": "string",
+			"defaultValue": "https://clusterreply2.my.salesforce.com"
+		},
+		"LS_SF_properties_typeProperties_username": {
+			"type": "string",
+			"defaultValue": "meetalpa-8dzy@force.com"
+		},
+		"containerUri": {
+			"type": "string",
+			"metadata": "URI to storage account containing linked ARM templates"
+		},
+		"containerSasToken": {
+			"type": "string",
+			"metadata": "Sas token to storage account containing linked ARM templates"
+		}
+	},
+	"variables": {
+		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
+	},
+	"resources": [
+		{
+			"name": "AZDEV-DF-DGS2021_ArmTemplate_0",
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "2018-02-01",
+			"properties": {
+				"mode": "incremental",
+				"templateLink": {
+					"uri": "[concat(parameters('containerUri'), '/ArmTemplate_0.json', parameters('containerSasToken'))]",
+					"contentVersion": "1.0.0.0"
+				},
+				"parameters": {
+					"factoryName": {
+						"value": "[parameters('factoryName')]"
+					},
+					"LS_SF_password": {
+						"value": "[parameters('LS_SF_password')]"
+					},
+					"LS_SF_securityToken": {
+						"value": "[parameters('LS_SF_securityToken')]"
+					},
+					"LS_KV_properties_typeProperties_baseUrl": {
+						"value": "[parameters('LS_KV_properties_typeProperties_baseUrl')]"
+					},
+					"LS_REST_properties_typeProperties_url": {
+						"value": "[parameters('LS_REST_properties_typeProperties_url')]"
+					},
+					"LS_SF_properties_typeProperties_environmentUrl": {
+						"value": "[parameters('LS_SF_properties_typeProperties_environmentUrl')]"
+					},
+					"LS_SF_properties_typeProperties_username": {
+						"value": "[parameters('LS_SF_properties_typeProperties_username')]"
+					},
+					"LS_ABLB_properties_typeProperties_connectionString_secretName": {
+						"value": "[parameters('LS_ABLB_properties_typeProperties_connectionString_secretName')]"
+					},
+					"LS_ASQL_properties_typeProperties_connectionString_secretName": {
+						"value": "[parameters('LS_ASQL_properties_typeProperties_connectionString_secretName')]"
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "AZDEV-DF-DGS2021_ArmTemplate_1",
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "2018-02-01",
+			"properties": {
+				"mode": "incremental",
+				"templateLink": {
+					"uri": "[concat(parameters('containerUri'), '/ArmTemplate_1.json', parameters('containerSasToken'))]",
+					"contentVersion": "1.0.0.0"
+				},
+				"parameters": {
+					"factoryName": {
+						"value": "[parameters('factoryName')]"
+					}
+				}
+			},
+			"dependsOn": [
+				"[resourceId('Microsoft.Resources/deployments', 'AZDEV-DF-DGS2021_ArmTemplate_0')]"
+			]
+		}
+	]
+}

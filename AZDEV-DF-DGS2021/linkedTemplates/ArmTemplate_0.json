@@ -1,0 +1,1157 @@
+{
+	"$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"type": "string",
+			"metadata": "Data Factory name",
+			"defaultValue": "AZDEV-DF-DGS2021"
+		},
+		"LS_SF_password": {
+			"type": "secureString",
+			"metadata": "Secure string for 'password' of 'LS_SF'"
+		},
+		"LS_SF_securityToken": {
+			"type": "secureString",
+			"metadata": "Secure string for 'securityToken' of 'LS_SF'"
+		},
+		"LS_KV_properties_typeProperties_baseUrl": {
+			"type": "string",
+			"defaultValue": "https://AZDEV-KV-DGS2021.vault.azure.net/"
+		},
+		"LS_REST_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://dummy.restapiexample.com/api/v1/employees"
+		},
+		"LS_SF_properties_typeProperties_environmentUrl": {
+			"type": "string",
+			"defaultValue": "https://clusterreply2.my.salesforce.com"
+		},
+		"LS_SF_properties_typeProperties_username": {
+			"type": "string",
+			"defaultValue": "meetalpa-8dzy@force.com"
+		},
+		"LS_ABLB_properties_typeProperties_connectionString_secretName": {
+			"type": "string",
+			"defaultValue": "ABLB-CONNECTION"
+		},
+		"LS_ASQL_properties_typeProperties_connectionString_secretName": {
+			"type": "string",
+			"defaultValue": "ASQL-DB-CONNECTION"
+		}
+	},
+	"variables": {
+		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
+	},
+	"resources": [
+		{
+			"name": "[concat(parameters('factoryName'), '/LS_KV')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureKeyVault",
+				"typeProperties": {
+					"baseUrl": "[parameters('LS_KV_properties_typeProperties_baseUrl')]"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/LS_REST')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "RestService",
+				"typeProperties": {
+					"url": "[parameters('LS_REST_properties_typeProperties_url')]",
+					"enableServerCertificateValidation": true,
+					"authenticationType": "Anonymous"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/LS_SF')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "Salesforce",
+				"typeProperties": {
+					"environmentUrl": "[parameters('LS_SF_properties_typeProperties_environmentUrl')]",
+					"username": "[parameters('LS_SF_properties_typeProperties_username')]",
+					"password": {
+						"type": "SecureString",
+						"value": "[parameters('LS_SF_password')]"
+					},
+					"securityToken": {
+						"type": "SecureString",
+						"value": "[parameters('LS_SF_securityToken')]"
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DS_REST')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "LS_REST",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "DEMO 1"
+				},
+				"annotations": [],
+				"type": "RestResource",
+				"typeProperties": {},
+				"schema": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/LS_REST')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/LS_ABLB')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureBlobStorage",
+				"typeProperties": {
+					"connectionString": {
+						"type": "AzureKeyVaultSecret",
+						"store": {
+							"referenceName": "LS_KV",
+							"type": "LinkedServiceReference"
+						},
+						"secretName": "[parameters('LS_ABLB_properties_typeProperties_connectionString_secretName')]"
+					}
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/LS_KV')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/LS_ASQL')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureSqlDatabase",
+				"typeProperties": {
+					"connectionString": {
+						"type": "AzureKeyVaultSecret",
+						"store": {
+							"referenceName": "LS_KV",
+							"type": "LinkedServiceReference"
+						},
+						"secretName": "[parameters('LS_ASQL_properties_typeProperties_connectionString_secretName')]"
+					}
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/LS_KV')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DS_ABLB')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "LS_ABLB",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "DEMO 1"
+				},
+				"annotations": [],
+				"type": "Json",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"container": "emp-in"
+					}
+				},
+				"schema": {
+					"type": "object",
+					"properties": {
+						"status": {
+							"type": "string"
+						},
+						"data": {
+							"type": "array",
+							"items": {
+								"type": "object",
+								"properties": {
+									"id": {
+										"type": "integer"
+									},
+									"employee_name": {
+										"type": "string"
+									},
+									"employee_salary": {
+										"type": "integer"
+									},
+									"employee_age": {
+										"type": "integer"
+									},
+									"profile_image": {
+										"type": "string"
+									}
+								}
+							}
+						},
+						"message": {
+							"type": "string"
+						}
+					}
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/LS_ABLB')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DS_ABLB_Events')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "LS_ABLB",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "DEMO 2"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"fileName": "events.csv",
+						"container": "file-in"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": [
+					{
+						"name": "id_odsp",
+						"type": "String"
+					},
+					{
+						"name": "id_event",
+						"type": "String"
+					},
+					{
+						"name": "sort_order",
+						"type": "String"
+					},
+					{
+						"name": "time",
+						"type": "String"
+					},
+					{
+						"name": "text",
+						"type": "String"
+					},
+					{
+						"name": "event_type",
+						"type": "String"
+					},
+					{
+						"name": "event_type2",
+						"type": "String"
+					},
+					{
+						"name": "side",
+						"type": "String"
+					},
+					{
+						"name": "event_team",
+						"type": "String"
+					},
+					{
+						"name": "opponent",
+						"type": "String"
+					},
+					{
+						"name": "player",
+						"type": "String"
+					},
+					{
+						"name": "player2",
+						"type": "String"
+					},
+					{
+						"name": "player_in",
+						"type": "String"
+					},
+					{
+						"name": "player_out",
+						"type": "String"
+					},
+					{
+						"name": "shot_place",
+						"type": "String"
+					},
+					{
+						"name": "shot_outcome",
+						"type": "String"
+					},
+					{
+						"name": "is_goal",
+						"type": "String"
+					},
+					{
+						"name": "location",
+						"type": "String"
+					},
+					{
+						"name": "bodypart",
+						"type": "String"
+					},
+					{
+						"name": "assist_method",
+						"type": "String"
+					},
+					{
+						"name": "situation",
+						"type": "String"
+					},
+					{
+						"name": "fast_break",
+						"type": "String"
+					}
+				]
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/LS_ABLB')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DS_ABLB_GINFO')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "LS_ABLB",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "DEMO 2"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"fileName": "ginf.csv",
+						"container": "file-in"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": [
+					{
+						"name": "Prop_0",
+						"type": "String"
+					},
+					{
+						"name": "Prop_1",
+						"type": "String"
+					},
+					{
+						"name": "Prop_2",
+						"type": "String"
+					},
+					{
+						"name": "Prop_3",
+						"type": "String"
+					},
+					{
+						"name": "Prop_4",
+						"type": "String"
+					},
+					{
+						"name": "Prop_5",
+						"type": "String"
+					},
+					{
+						"name": "Prop_6",
+						"type": "String"
+					},
+					{
+						"name": "Prop_7",
+						"type": "String"
+					},
+					{
+						"name": "Prop_8",
+						"type": "String"
+					},
+					{
+						"name": "Prop_9",
+						"type": "String"
+					},
+					{
+						"name": "Prop_10",
+						"type": "String"
+					},
+					{
+						"name": "Prop_11",
+						"type": "String"
+					},
+					{
+						"name": "Prop_12",
+						"type": "String"
+					},
+					{
+						"name": "Prop_13",
+						"type": "String"
+					},
+					{
+						"name": "Prop_14",
+						"type": "String"
+					},
+					{
+						"name": "Prop_15",
+						"type": "String"
+					},
+					{
+						"name": "Prop_16",
+						"type": "String"
+					},
+					{
+						"name": "Prop_17",
+						"type": "String"
+					}
+				]
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/LS_ABLB')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DS_ABLB_IN')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "LS_ABLB",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "DEMO 3"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"fileName": "events.csv",
+						"container": "file-in"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": [
+					{
+						"name": "id_odsp",
+						"type": "String"
+					},
+					{
+						"name": "id_event",
+						"type": "String"
+					},
+					{
+						"name": "sort_order",
+						"type": "String"
+					},
+					{
+						"name": "time",
+						"type": "String"
+					},
+					{
+						"name": "text",
+						"type": "String"
+					},
+					{
+						"name": "event_type",
+						"type": "String"
+					},
+					{
+						"name": "event_type2",
+						"type": "String"
+					},
+					{
+						"name": "side",
+						"type": "String"
+					},
+					{
+						"name": "event_team",
+						"type": "String"
+					},
+					{
+						"name": "opponent",
+						"type": "String"
+					},
+					{
+						"name": "player",
+						"type": "String"
+					},
+					{
+						"name": "player2",
+						"type": "String"
+					},
+					{
+						"name": "player_in",
+						"type": "String"
+					},
+					{
+						"name": "player_out",
+						"type": "String"
+					},
+					{
+						"name": "shot_place",
+						"type": "String"
+					},
+					{
+						"name": "shot_outcome",
+						"type": "String"
+					},
+					{
+						"name": "is_goal",
+						"type": "String"
+					},
+					{
+						"name": "location",
+						"type": "String"
+					},
+					{
+						"name": "bodypart",
+						"type": "String"
+					},
+					{
+						"name": "assist_method",
+						"type": "String"
+					},
+					{
+						"name": "situation",
+						"type": "String"
+					},
+					{
+						"name": "fast_break",
+						"type": "String"
+					}
+				]
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/LS_ABLB')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DS_ASQL')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "LS_ASQL",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "DEMO 1"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [],
+				"typeProperties": {
+					"table": "EMP"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/LS_ASQL')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DS_ASQL_Events')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "LS_ASQL",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "DEMO 2"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [],
+				"typeProperties": {
+					"schema": "dbo",
+					"table": "Events"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/LS_ASQL')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DS_ASQL_SINK')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "LS_ASQL",
+					"type": "LinkedServiceReference"
+				},
+				"parameters": {
+					"TableName": {
+						"type": "string"
+					}
+				},
+				"folder": {
+					"name": "DEMO 3"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [],
+				"typeProperties": {
+					"table": {
+						"value": "@dataset().TableName",
+						"type": "Expression"
+					}
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/LS_ASQL')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DS_ASQL_GINFO')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "LS_ASQL",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "DEMO 2"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [],
+				"typeProperties": {
+					"schema": "dbo",
+					"table": "ginfo"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/LS_ASQL')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DS_ABLB_IN_ALL')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "LS_ABLB",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "DEMO 3"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"container": "file-in"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"quoteChar": "\""
+				},
+				"schema": [
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					}
+				]
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/LS_ABLB')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/PL_BLOB_SQL')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "For Each File",
+						"type": "ForEach",
+						"dependsOn": [
+							{
+								"activity": "Get All Files",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							},
+							{
+								"activity": "Set rundate",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"items": {
+								"value": "@activity('Get All Files').output.childitems",
+								"type": "Expression"
+							},
+							"batchCount": 2,
+							"activities": [
+								{
+									"name": "Copy data",
+									"type": "Copy",
+									"dependsOn": [],
+									"policy": {
+										"timeout": "7.00:00:00",
+										"retry": 0,
+										"retryIntervalInSeconds": 30,
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [
+										{
+											"name": "Source",
+											"value": "file-in//events.csv"
+										},
+										{
+											"name": "Destination",
+											"value": ".@{split(item().name,'.csv')}"
+										}
+									],
+									"typeProperties": {
+										"source": {
+											"type": "DelimitedTextSource",
+											"additionalColumns": {
+												"type": "Expression",
+												"value": "@variables('strvalue')"
+											},
+											"storeSettings": {
+												"type": "AzureBlobStorageReadSettings",
+												"recursive": true,
+												"wildcardFileName": {
+													"value": "@item().name",
+													"type": "Expression"
+												},
+												"enablePartitionDiscovery": false
+											},
+											"formatSettings": {
+												"type": "DelimitedTextReadSettings"
+											}
+										},
+										"sink": {
+											"type": "AzureSqlSink",
+											"writeBehavior": "insert",
+											"tableOption": "autoCreate",
+											"disableMetricsCollection": false
+										},
+										"enableStaging": false,
+										"translator": {
+											"type": "TabularTranslator",
+											"typeConversion": true,
+											"typeConversionSettings": {
+												"allowDataTruncation": true,
+												"treatBooleanAsNumber": false
+											}
+										}
+									},
+									"inputs": [
+										{
+											"referenceName": "DS_ABLB_IN",
+											"type": "DatasetReference",
+											"parameters": {}
+										}
+									],
+									"outputs": [
+										{
+											"referenceName": "DS_ASQL_SINK",
+											"type": "DatasetReference",
+											"parameters": {
+												"TableName": {
+													"value": "@split(item().name,'.csv')",
+													"type": "Expression"
+												}
+											}
+										}
+									]
+								}
+							]
+						}
+					},
+					{
+						"name": "Get All Files",
+						"type": "GetMetadata",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"dataset": {
+								"referenceName": "DS_ABLB_IN_ALL",
+								"type": "DatasetReference",
+								"parameters": {}
+							},
+							"fieldList": [
+								"childItems"
+							],
+							"storeSettings": {
+								"type": "AzureBlobStorageReadSettings",
+								"enablePartitionDiscovery": false
+							},
+							"formatSettings": {
+								"type": "DelimitedTextReadSettings"
+							}
+						}
+					},
+					{
+						"name": "Set rundate",
+						"type": "SetVariable",
+						"dependsOn": [],
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "strvalue",
+							"value": {
+								"value": "@utcnow()",
+								"type": "Expression"
+							}
+						}
+					}
+				],
+				"variables": {
+					"strvalue": {
+						"type": "String"
+					}
+				},
+				"folder": {
+					"name": "DEMO 3"
+				},
+				"annotations": [],
+				"lastPublishTime": "2021-08-03T22:29:39Z"
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/DS_ABLB_IN_ALL')]",
+				"[concat(variables('factoryId'), '/datasets/DS_ABLB_IN')]",
+				"[concat(variables('factoryId'), '/datasets/DS_ASQL_SINK')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/PL_MOVE_EVENTS')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"description": "Moving file without pipeline parameter.",
+				"activities": [
+					{
+						"name": "Copy data Event data",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "DelimitedTextSource",
+								"storeSettings": {
+									"type": "AzureBlobStorageReadSettings",
+									"recursive": true,
+									"enablePartitionDiscovery": false
+								},
+								"formatSettings": {
+									"type": "DelimitedTextReadSettings"
+								}
+							},
+							"sink": {
+								"type": "AzureSqlSink",
+								"writeBehavior": "insert",
+								"tableOption": "autoCreate",
+								"disableMetricsCollection": false
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"typeConversion": true,
+								"typeConversionSettings": {
+									"allowDataTruncation": true,
+									"treatBooleanAsNumber": false
+								}
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "DS_ABLB_Events",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "DS_ASQL_Events",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					}
+				],
+				"folder": {
+					"name": "DEMO 2"
+				},
+				"annotations": [],
+				"lastPublishTime": "2021-08-02T22:30:19Z"
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/DS_ABLB_Events')]",
+				"[concat(variables('factoryId'), '/datasets/DS_ASQL_Events')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/PL_MOVE_EVENTS_GINFO')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"description": "Moving file without pipeline parameter.",
+				"activities": [
+					{
+						"name": "Copy data Event data",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "DelimitedTextSource",
+								"storeSettings": {
+									"type": "AzureBlobStorageReadSettings",
+									"recursive": true,
+									"enablePartitionDiscovery": false
+								},
+								"formatSettings": {
+									"type": "DelimitedTextReadSettings"
+								}
+							},
+							"sink": {
+								"type": "AzureSqlSink",
+								"writeBehavior": "insert",
+								"tableOption": "autoCreate",
+								"disableMetricsCollection": false
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"typeConversion": true,
+								"typeConversionSettings": {
+									"allowDataTruncation": true,
+									"treatBooleanAsNumber": false
+								}
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "DS_ABLB_GINFO",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "DS_ASQL_GINFO",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					}
+				],
+				"folder": {
+					"name": "DEMO 2"
+				},
+				"annotations": [],
+				"lastPublishTime": "2021-08-02T22:33:46Z"
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/DS_ABLB_GINFO')]",
+				"[concat(variables('factoryId'), '/datasets/DS_ASQL_GINFO')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DF_EVENT')]",
+			"type": "Microsoft.DataFactory/factories/dataflows",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"folder": {
+					"name": "DEMO 2"
+				},
+				"type": "MappingDataFlow",
+				"typeProperties": {
+					"sources": [
+						{
+							"dataset": {
+								"referenceName": "DS_ABLB_Events",
+								"type": "DatasetReference"
+							},
+							"name": "source1"
+						}
+					],
+					"sinks": [
+						{
+							"name": "sink1"
+						}
+					],
+					"transformations": [],
+					"script": "source(output(\n\t\tid_odsp as string,\n\t\tid_event as string,\n\t\tsort_order as string,\n\t\ttime as string,\n\t\ttext as string,\n\t\tevent_type as string,\n\t\tevent_type2 as string,\n\t\tside as string,\n\t\tevent_team as string,\n\t\topponent as string,\n\t\tplayer as string,\n\t\tplayer2 as string,\n\t\tplayer_in as string,\n\t\tplayer_out as string,\n\t\tshot_place as string,\n\t\tshot_outcome as string,\n\t\tis_goal as string,\n\t\tlocation as string,\n\t\tbodypart as string,\n\t\tassist_method as string,\n\t\tsituation as string,\n\t\tfast_break as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false) ~> source1\nsource1 sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true,\n\tstore: 'cache',\n\tformat: 'inline',\n\toutput: true,\n\tsaveOrder: 1) ~> sink1"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/DS_ABLB_Events')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DF_TRANSORM')]",
+			"type": "Microsoft.DataFactory/factories/dataflows",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"folder": {
+					"name": "DEMO 1"
+				},
+				"type": "MappingDataFlow",
+				"typeProperties": {
+					"sources": [
+						{
+							"dataset": {
+								"referenceName": "DS_ABLB",
+								"type": "DatasetReference"
+							},
+							"name": "source"
+						}
+					],
+					"sinks": [
+						{
+							"dataset": {
+								"referenceName": "DS_ASQL",
+								"type": "DatasetReference"
+							},
+							"name": "sinkASQL"
+						}
+					],
+					"transformations": [
+						{
+							"name": "Flatten"
+						}
+					],
+					"script": "source(output(\n\t\tstatus as string,\n\t\tdata as (id as string, employee_name as string, employee_salary as string, employee_age as string, profile_image as string)[],\n\t\tmessage as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false,\n\tdocumentForm: 'documentPerLine') ~> source\nsource foldDown(unroll(data, data),\n\tmapColumn(\n\t\tstatus,\n\t\tdata,\n\t\tmessage\n\t),\n\tskipDuplicateMapInputs: false,\n\tskipDuplicateMapOutputs: false) ~> Flatten\nFlatten sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tdeletable:false,\n\tinsertable:true,\n\tupdateable:false,\n\tupsertable:false,\n\tformat: 'table',\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true,\n\terrorHandlingOption: 'stopOnFirstError',\n\tmapColumn(\n\t\tdata = data.id,\n\t\temployee_name = data.employee_name,\n\t\temployee_salary = data.employee_salary,\n\t\temployee_age = data.employee_age,\n\t\tprofile_image = data.profile_image\n\t)) ~> sinkASQL"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/DS_ABLB')]",
+				"[concat(variables('factoryId'), '/datasets/DS_ASQL')]"
+			]
+		}
+	]
+}
