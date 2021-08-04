@@ -50,7 +50,7 @@
 				],
 				"outputs": [
 					{
-						"referenceName": "DS_ASQL_Events",
+						"referenceName": "DS_ASQL_GINFO",
 						"type": "DatasetReference"
 					}
 				]
