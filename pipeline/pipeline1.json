@@ -3,7 +3,7 @@
 	"properties": {
 		"activities": [
 			{
-				"name": "Web1",
+				"name": "Sentiment Analysis",
 				"type": "WebActivity",
 				"dependsOn": [],
 				"policy": {
