@@ -46,6 +46,11 @@
 				],
 				"userProperties": [],
 				"typeProperties": {
+					"items": {
+						"value": "@activity('Feedback records').output.value\n\n",
+						"type": "Expression"
+					},
+					"batchCount": 10,
 					"activities": [
 						{
 							"name": "Sentiment Analysis",
@@ -68,7 +73,7 @@
 									"Accept": "application/json"
 								},
 								"body": {
-									"value": "@concat('{\n        \"documents\": [\n            {\n                \"language\": \"en\",\n                \"id\": \"1\",\n                \"text\":\"I am happy\"\n            }\n        ]\n    }')",
+									"value": "@concat('{\n        \"documents\": [\n            {\n                \"language\": \"en\",\n                \"id\": \"',concat(item().Customer ID, concat('\", \"text\": \"', concat(item().Feedback,'\"\n            }\n        ]\n    }'))))\n",
 									"type": "Expression"
 								}
 							}
