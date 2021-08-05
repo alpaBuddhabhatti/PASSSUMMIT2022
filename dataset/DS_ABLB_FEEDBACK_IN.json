@@ -1,0 +1,36 @@
+{
+	"name": "DS_ABLB_FEEDBACK_IN",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "LS_ABLB",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"fileName": "Customer Feedback.csv",
+				"container": "feedback-in"
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": [
+			{
+				"name": "Customer ID",
+				"type": "String"
+			},
+			{
+				"name": "Product ",
+				"type": "String"
+			},
+			{
+				"name": "Feedback",
+				"type": "String"
+			}
+		]
+	}
+}
