@@ -1,0 +1,34 @@
+{
+	"name": "pipeline1",
+	"properties": {
+		"activities": [
+			{
+				"name": "Web1",
+				"type": "WebActivity",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"url": "https://dsp2021-sentiment.cognitiveservices.azure.com/text/analytics/v3.0/languages?1",
+					"method": "POST",
+					"headers": {
+						"Ocp-Apim-Subscription-Key": "6dbd673a9cf645e89fcb8c0cf1fd751b",
+						"Content-Type": "application/json",
+						"Accept": "application/json"
+					},
+					"body": {
+						"value": "@concat('{\n        \"documents\": [\n            {\n                \"language\": \"en\",\n                \"id\": \"1\",\n                \"text\":\"happy\"\n            }\n        ]\n    }')",
+						"type": "Expression"
+					}
+				}
+			}
+		],
+		"annotations": []
+	}
+}
