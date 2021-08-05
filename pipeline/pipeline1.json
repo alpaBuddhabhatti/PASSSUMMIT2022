@@ -29,7 +29,7 @@
 				}
 			},
 			{
-				"name": "Lookup1",
+				"name": "Feedback records",
 				"type": "Lookup",
 				"dependsOn": [],
 				"policy": {
