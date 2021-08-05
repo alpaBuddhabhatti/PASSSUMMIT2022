@@ -23,7 +23,7 @@
 						"Accept": "application/json"
 					},
 					"body": {
-						"value": "@concat('{\n        \"documents\": [\n            {\n                \"language\": \"en\",\n                \"id\": \"1\",\n                \"text\":\"I am sad\"\n            }\n        ]\n    }')",
+						"value": "@concat('{\n        \"documents\": [\n            {\n                \"language\": \"en\",\n                \"id\": \"1\",\n                \"text\":\"I am happy\"\n            }\n        ]\n    }')",
 						"type": "Expression"
 					}
 				}
