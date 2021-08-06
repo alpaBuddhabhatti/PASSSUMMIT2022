@@ -77,6 +77,19 @@
 									"type": "Expression"
 								}
 							}
+						},
+						{
+							"name": "Results",
+							"type": "AppendVariable",
+							"dependsOn": [
+								{
+									"activity": "Sentiment Analysis",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"userProperties": []
 						}
 					]
 				}
