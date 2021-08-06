@@ -32,7 +32,7 @@
 					"name": "Join"
 				}
 			],
-			"script": "source(output(\n\t\t{Customer ID} as string,\n\t\t{Product } as string,\n\t\tFeedback as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false,\n\twildcardPaths:['*.csv']) ~> CustomerFeedback\nsource(output(\n\t\tid as string,\n\t\tsentiment as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false,\n\tdocumentForm: 'documentPerLine') ~> SentimentalAnalysis\nCustomerFeedback, SentimentalAnalysis join({Customer ID} == id,\n\tjoinType:'inner',\n\tbroadcast: 'auto')~> Join\nJoin sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true,\n\tstore: 'cache',\n\tformat: 'inline',\n\toutput: false,\n\tsaveOrder: 1) ~> sink"
+			"script": "source(output(\n\t\t{Customer ID} as string,\n\t\t{Product } as string,\n\t\tFeedback as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false,\n\twildcardPaths:['*.csv']) ~> CustomerFeedback\nsource(output(\n\t\tid as string,\n\t\tsentiment as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false,\n\tdocumentForm: 'documentPerLine') ~> SentimentalAnalysis\nCustomerFeedback, SentimentalAnalysis join({Customer ID} == id,\n\tjoinType:'inner',\n\tbroadcast: 'auto')~> Join\nJoin sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true,\n\tstore: 'cache',\n\tformat: 'inline',\n\toutput: false,\n\tsaveOrder: 1,\n\tmapColumn(\n\t\t{Customer ID},\n\t\t{Product },\n\t\tFeedback,\n\t\tid,\n\t\tsentiment\n\t)) ~> sink"
 		}
 	}
 }
