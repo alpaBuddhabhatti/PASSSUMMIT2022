@@ -1,0 +1,29 @@
+{
+	"name": "DS_ABLB_JSON",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "LS_ABLB",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Json",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"fileName": "SentimentAnalysis.csv",
+				"container": "feedback-staging"
+			}
+		},
+		"schema": {
+			"type": "object",
+			"properties": {
+				"id": {
+					"type": "string"
+				},
+				"sentiment": {
+					"type": "string"
+				}
+			}
+		}
+	}
+}
