@@ -5,6 +5,12 @@
 			"referenceName": "LS_ABLB",
 			"type": "LinkedServiceReference"
 		},
+		"parameters": {
+			"SpecCode": {
+				"type": "string",
+				"defaultValue": "feedback"
+			}
+		},
 		"folder": {
 			"name": "SentimentAnalysis"
 		},
@@ -13,7 +19,10 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobStorageLocation",
-				"container": "feedback"
+				"container": {
+					"value": "@dataset().SpecCode",
+					"type": "Expression"
+				}
 			},
 			"columnDelimiter": ",",
 			"escapeChar": "\\",
