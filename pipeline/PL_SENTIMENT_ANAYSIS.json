@@ -97,6 +97,40 @@
 									"type": "Expression"
 								}
 							}
+						},
+						{
+							"name": "Writing To blob",
+							"type": "WebActivity",
+							"dependsOn": [
+								{
+									"activity": "Results",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"policy": {
+								"timeout": "7.00:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"url": {
+									"value": "@concat('https://azdevstoredgs2021.blob.core.windows.net/feedback-stating/' ,'SentimentAnalysis.csv')",
+									"type": "Expression"
+								},
+								"method": "PUT",
+								"body": {
+									"value": "@variables('SentimentAnalysis')",
+									"type": "Expression"
+								},
+								"authentication": {
+									"type": "MSI"
+								}
+							}
 						}
 					]
 				}
