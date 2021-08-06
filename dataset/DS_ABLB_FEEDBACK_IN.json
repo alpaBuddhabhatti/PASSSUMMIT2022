@@ -5,6 +5,9 @@
 			"referenceName": "LS_ABLB",
 			"type": "LinkedServiceReference"
 		},
+		"folder": {
+			"name": "SentimentAnalysis"
+		},
 		"annotations": [],
 		"type": "DelimitedText",
 		"typeProperties": {
