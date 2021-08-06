@@ -19,7 +19,7 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobStorageLocation",
-				"fileName": "Customer Feedback.csv",
+				"fileName": "*.csv",
 				"container": {
 					"value": "@concat(dataset().SpecCode,'-in')",
 					"type": "Expression"
