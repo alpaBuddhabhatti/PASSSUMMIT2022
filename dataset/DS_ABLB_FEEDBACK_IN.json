@@ -23,7 +23,7 @@
 		},
 		"schema": [
 			{
-				"name": "Customer ID",
+				"name": "CustomerID",
 				"type": "String"
 			},
 			{
