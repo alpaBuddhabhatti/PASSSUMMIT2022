@@ -9,6 +9,9 @@
 			"SpecCode": {
 				"type": "string",
 				"defaultValue": "feedback"
+			},
+			"FileName": {
+				"type": "string"
 			}
 		},
 		"folder": {
@@ -20,7 +23,10 @@
 			"location": {
 				"type": "AzureBlobStorageLocation",
 				"fileName": "Customer Feedback.csv",
-				"container": "feedback-in"
+				"container": {
+					"value": "@concat(dataset().SpecCode,'-in')",
+					"type": "Expression"
+				}
 			},
 			"columnDelimiter": ",",
 			"escapeChar": "\\",
