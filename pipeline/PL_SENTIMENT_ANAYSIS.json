@@ -172,6 +172,12 @@
 				}
 			}
 		],
+		"parameters": {
+			"SpecCode": {
+				"type": "string",
+				"defaultValue": "feedback"
+			}
+		},
 		"variables": {
 			"SentimentAnalysis": {
 				"type": "Array"
