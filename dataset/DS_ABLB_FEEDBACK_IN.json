@@ -20,19 +20,6 @@
 			"firstRowAsHeader": true,
 			"quoteChar": "\""
 		},
-		"schema": [
-			{
-				"name": "CustomerID",
-				"type": "String"
-			},
-			{
-				"name": "Product ",
-				"type": "String"
-			},
-			{
-				"name": "Feedback",
-				"type": "String"
-			}
-		]
+		"schema": []
 	}
 }
