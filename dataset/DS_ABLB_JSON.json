@@ -13,7 +13,7 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobStorageLocation",
-				"fileName": "*.csv",
+				"fileName": "*.json",
 				"container": "feedback-staging"
 			}
 		},
