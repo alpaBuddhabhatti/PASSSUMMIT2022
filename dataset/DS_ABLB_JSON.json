@@ -13,7 +13,7 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobStorageLocation",
-				"fileName": "SentimentAnalysis.csv",
+				"fileName": "*.csv",
 				"container": "feedback-staging"
 			}
 		},
