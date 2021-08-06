@@ -179,6 +179,12 @@
 					"dataflow": {
 						"referenceName": "CustomerData",
 						"type": "DataFlowReference",
+						"parameters": {
+							"SpecCode": {
+								"value": "'@{pipeline().parameters.SpecCode}'",
+								"type": "Expression"
+							}
+						},
 						"datasetParameters": {
 							"CustomerFeedback": {
 								"SpecCode": "feedback"
