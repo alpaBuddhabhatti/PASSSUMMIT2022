@@ -201,7 +201,7 @@
 				"dependsOn": [],
 				"userProperties": [],
 				"typeProperties": {
-					"variableName": "SentimentAnalysis",
+					"variableName": "FileNameWithTimeStamp",
 					"value": {
 						"value": "@concat(pipeline().parameters.SpecCode,'_',substring(replace(replace(replace(pipeline().TriggerTime,'-',''),':',''),'T','_'),0,15))",
 						"type": "Expression"
@@ -222,6 +222,9 @@
 		"variables": {
 			"SentimentAnalysis": {
 				"type": "Array"
+			},
+			"FileNameWithTimeStamp": {
+				"type": "String"
 			}
 		},
 		"folder": {
