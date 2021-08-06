@@ -147,7 +147,7 @@
 			}
 		},
 		"folder": {
-			"name": "Sentiment Analysis"
+			"name": "SentimentAnalysis"
 		},
 		"annotations": []
 	}
