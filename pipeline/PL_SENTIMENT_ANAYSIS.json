@@ -89,15 +89,18 @@
 									]
 								}
 							],
-							"userProperties": []
+							"userProperties": [],
+							"typeProperties": {
+								"variableName": ""
+							}
 						}
 					]
 				}
 			}
 		],
-		"parameters": {
+		"variables": {
 			"SentimentAnalysis": {
-				"type": "array"
+				"type": "Array"
 			}
 		},
 		"annotations": []
