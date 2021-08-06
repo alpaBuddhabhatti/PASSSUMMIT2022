@@ -7,10 +7,12 @@
 		},
 		"parameters": {
 			"TableName": {
-				"type": "string"
+				"type": "string",
+				"defaultValue": "feedbackreport"
 			},
 			"SchemaName": {
-				"type": "string"
+				"type": "string",
+				"defaultValue": "dbo"
 			}
 		},
 		"folder": {
