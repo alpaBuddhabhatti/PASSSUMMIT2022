@@ -146,6 +146,9 @@
 				"type": "Array"
 			}
 		},
+		"folder": {
+			"name": "Sentiment Analysis"
+		},
 		"annotations": []
 	}
 }
