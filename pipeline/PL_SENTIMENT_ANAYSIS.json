@@ -91,7 +91,11 @@
 							],
 							"userProperties": [],
 							"typeProperties": {
-								"variableName": ""
+								"variableName": "SentimentAnalysis",
+								"value": {
+									"value": "@activity('Sentiment Analysis').output",
+									"type": "Expression"
+								}
 							}
 						}
 					]
