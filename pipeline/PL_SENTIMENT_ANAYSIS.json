@@ -216,7 +216,7 @@
 			},
 			"FileName": {
 				"type": "string",
-				"defaultValue": "Customer Feedback.csv"
+				"defaultValue": "Customer Feedback"
 			}
 		},
 		"variables": {
