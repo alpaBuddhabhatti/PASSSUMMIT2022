@@ -125,7 +125,7 @@
 						"value": "@concat('https://azdevstoredgs2021.blob.core.windows.net/feedback-stating/' ,'SentimentAnalysis.csv')",
 						"type": "Expression"
 					},
-					"method": "POST",
+					"method": "PUT",
 					"headers": {
 						"x-ms-version": "2017-11-09",
 						"x-ms-blob-type": "BlockBlob"
