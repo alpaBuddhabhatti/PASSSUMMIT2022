@@ -20,7 +20,10 @@
 			"location": {
 				"type": "AzureBlobStorageLocation",
 				"fileName": "*.json",
-				"container": "feedback-staging"
+				"container": {
+					"value": "@concat(dataset().SpecCode,'-staging')",
+					"type": "Expression"
+				}
 			}
 		},
 		"schema": {
