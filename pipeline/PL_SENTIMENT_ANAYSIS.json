@@ -93,7 +93,7 @@
 							"typeProperties": {
 								"variableName": "SentimentAnalysis",
 								"value": {
-									"value": "@json(concat('{\"id\":','\"',activity('Sentiment Analysis').output.documents.id,\n'\",\"sentiment\": \"',activity('Sentiment Analysis').output.documents.sentiment ,\n'\" }'))",
+									"value": "@json(concat('{\"id\":','\"',activity('Sentiment Analysis').output.documents[0].id,\n'\",\"sentiment\": \"',activity('Sentiment Analysis').output.documents[0].sentiment ,\n'\" }'))",
 									"type": "Expression"
 								}
 							}
