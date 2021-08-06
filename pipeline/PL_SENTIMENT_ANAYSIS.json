@@ -120,6 +120,12 @@
 						"dependencyConditions": [
 							"Succeeded"
 						]
+					},
+					{
+						"activity": "Set FileName for Staging",
+						"dependencyConditions": [
+							"Succeeded"
+						]
 					}
 				],
 				"policy": {
@@ -132,7 +138,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"url": {
-						"value": "@concat('https://azdevstoredgs2021.blob.core.windows.net/feedback-staging/' ,'SentimentAnalysis.csv')",
+						"value": "@concat('https://azdevstoredgs2021.blob.core.windows.net/feedback-staging/' ,variables('SentimentAnalysis'),'.json')",
 						"type": "Expression"
 					},
 					"method": "PUT",
@@ -172,13 +178,31 @@
 				"typeProperties": {
 					"dataflow": {
 						"referenceName": "CustomerData",
-						"type": "DataFlowReference"
+						"type": "DataFlowReference",
+						"datasetParameters": {
+							"CustomerFeedback": {
+								"SpecCode": "feedback"
+							}
+						}
 					},
 					"compute": {
 						"coreCount": 8,
 						"computeType": "General"
 					},
 					"traceLevel": "Fine"
+				}
+			},
+			{
+				"name": "Set FileName for Staging",
+				"type": "SetVariable",
+				"dependsOn": [],
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "SentimentAnalysis",
+					"value": {
+						"value": "@concat(pipeline().parameters.SpecCode,'_',substring(replace(replace(replace(pipeline().TriggerTime,'-',''),':',''),'T','_'),0,15))",
+						"type": "Expression"
+					}
 				}
 			}
 		],
