@@ -5,6 +5,9 @@
 			"referenceName": "LS_ASQL",
 			"type": "LinkedServiceReference"
 		},
+		"folder": {
+			"name": "SentimentAnalysis"
+		},
 		"annotations": [],
 		"type": "AzureSqlTable",
 		"schema": [],
