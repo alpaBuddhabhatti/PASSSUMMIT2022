@@ -82,6 +82,9 @@
 								"body": {
 									"value": "@concat('{\"documents\":[\n\t                     {\n\t\t\t\t\t\t  \"language\": \"en\",\"id\": \"',\n\t                         item().CustomerID ,\n\t\t\t\t\t\t\t'\", \"text\": \"' , item().Feedback ,'\"\n\t\t\t\t\t\t }\n\t\t\t\t\t\t ]\n\t\t\t\t\t\t }')",
 									"type": "Expression"
+								},
+								"authentication": {
+									"type": "MSI"
 								}
 							}
 						},
