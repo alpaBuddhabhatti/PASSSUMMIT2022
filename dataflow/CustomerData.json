@@ -1,0 +1,30 @@
+{
+	"name": "CustomerData",
+	"properties": {
+		"folder": {
+			"name": "SentimentAnalysis"
+		},
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "DS_ABLB_FEEDBACK_IN",
+						"type": "DatasetReference"
+					},
+					"name": "CustomerFeedback"
+				},
+				{
+					"dataset": {
+						"referenceName": "DS_ABLB_STAGING",
+						"type": "DatasetReference"
+					},
+					"name": "SentimentalAnalysis"
+				}
+			],
+			"sinks": [],
+			"transformations": [],
+			"script": "source(output(\n\t\t{Customer ID} as string,\n\t\t{Product } as string,\n\t\tFeedback as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false,\n\twildcardPaths:['*.csv']) ~> CustomerFeedback\nsource(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false) ~> SentimentalAnalysis"
+		}
+	}
+}
