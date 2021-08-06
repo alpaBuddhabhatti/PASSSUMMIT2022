@@ -5,6 +5,12 @@
 			"referenceName": "LS_ABLB",
 			"type": "LinkedServiceReference"
 		},
+		"parameters": {
+			"SpecCode": {
+				"type": "string",
+				"defaultValue": "feedback"
+			}
+		},
 		"folder": {
 			"name": "SentimentAnalysis"
 		},
