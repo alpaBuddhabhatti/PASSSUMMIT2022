@@ -9,9 +9,6 @@
 			"SpecCode": {
 				"type": "string",
 				"defaultValue": "feedback"
-			},
-			"FileName": {
-				"type": "string"
 			}
 		},
 		"folder": {
