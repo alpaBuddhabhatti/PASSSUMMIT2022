@@ -93,7 +93,7 @@
 							"typeProperties": {
 								"variableName": "SentimentAnalysis",
 								"value": {
-									"value": "@activity('Sentiment Analysis').output",
+									"value": "@activity('Sentiment Analysis').output.documents",
 									"type": "Expression"
 								}
 							}
@@ -125,10 +125,10 @@
 						"value": "@concat('https://azdevstoredgs2021.blob.core.windows.net/feedback-stating/' ,'SentimentAnalysis.csv')",
 						"type": "Expression"
 					},
-					"method": "PUT",
+					"method": "POST",
 					"headers": {
 						"x-ms-version": "2017-11-09",
-						"x-ms-blob-type": "blockblob"
+						"x-ms-blob-type": "BlockBlob"
 					},
 					"body": {
 						"value": "@variables('SentimentAnalysis')",
