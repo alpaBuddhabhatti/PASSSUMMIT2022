@@ -136,7 +136,7 @@
 					},
 					"authentication": {
 						"type": "MSI",
-						"resource": "https://storage.azure.com"
+						"resource": "https://storage.azure.com/"
 					}
 				}
 			}
