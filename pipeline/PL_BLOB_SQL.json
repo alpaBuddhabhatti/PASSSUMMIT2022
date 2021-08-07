@@ -79,7 +79,7 @@
 									"type": "DatasetReference",
 									"parameters": {
 										"FileName": {
-											"value": "@item()",
+											"value": "@item().name",
 											"type": "Expression"
 										},
 										"SpecCode": {
