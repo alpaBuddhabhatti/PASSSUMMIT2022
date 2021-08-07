@@ -5,6 +5,11 @@
 			"referenceName": "LS_ABLB",
 			"type": "LinkedServiceReference"
 		},
+		"parameters": {
+			"SpecCode": {
+				"type": "string"
+			}
+		},
 		"folder": {
 			"name": "DEMO 3"
 		},
