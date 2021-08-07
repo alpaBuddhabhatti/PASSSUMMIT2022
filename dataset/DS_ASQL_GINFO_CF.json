@@ -13,7 +13,7 @@
 		"schema": [],
 		"typeProperties": {
 			"schema": "dbo",
-			"table": "CF"
+			"table": "Customer Feedback"
 		}
 	}
 }
