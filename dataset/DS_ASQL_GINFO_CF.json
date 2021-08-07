@@ -1,0 +1,19 @@
+{
+	"name": "DS_ASQL_GINFO_CF",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "LS_ASQL",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "DEMO 2"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "CF"
+		}
+	}
+}
