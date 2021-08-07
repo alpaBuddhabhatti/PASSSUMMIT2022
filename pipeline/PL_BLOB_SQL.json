@@ -95,7 +95,7 @@
 									"type": "DatasetReference",
 									"parameters": {
 										"TableName": {
-											"value": "@item().name",
+											"value": "@trim(replace(item().name,'.csv',''))",
 											"type": "Expression"
 										},
 										"SchemaName": "dbo"
