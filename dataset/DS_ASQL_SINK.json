@@ -8,6 +8,9 @@
 		"parameters": {
 			"TableName": {
 				"type": "string"
+			},
+			"SchemaName": {
+				"type": "string"
 			}
 		},
 		"folder": {
