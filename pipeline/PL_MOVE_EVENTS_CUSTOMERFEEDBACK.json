@@ -45,7 +45,7 @@
 				},
 				"inputs": [
 					{
-						"referenceName": "DS_ABLB_GINFO",
+						"referenceName": "DS_ABLB_CF",
 						"type": "DatasetReference"
 					}
 				],
