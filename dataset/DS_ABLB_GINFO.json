@@ -13,7 +13,7 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobStorageLocation",
-				"fileName": "ginf.csv",
+				"fileName": "ginfo.csv",
 				"container": "file-in"
 			},
 			"columnDelimiter": ",",
