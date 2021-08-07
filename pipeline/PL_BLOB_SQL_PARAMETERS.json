@@ -57,7 +57,13 @@
 				"inputs": [
 					{
 						"referenceName": "DS_ABLB_IN",
-						"type": "DatasetReference"
+						"type": "DatasetReference",
+						"parameters": {
+							"FileName": {
+								"value": "@pipeline().parameters.FileName",
+								"type": "Expression"
+							}
+						}
 					}
 				],
 				"outputs": [
@@ -76,7 +82,12 @@
 		],
 		"parameters": {
 			"FileName": {
-				"type": "string"
+				"type": "string",
+				"defaultValue": "event.csv"
+			},
+			"SpecCode": {
+				"type": "string",
+				"defaultValue": "file"
 			}
 		},
 		"variables": {
