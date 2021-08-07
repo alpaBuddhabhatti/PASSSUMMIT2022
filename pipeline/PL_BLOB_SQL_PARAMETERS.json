@@ -62,6 +62,10 @@
 							"FileName": {
 								"value": "@pipeline().parameters.FileName",
 								"type": "Expression"
+							},
+							"SpecCode": {
+								"value": "@pipeline().parameters.SpecCode",
+								"type": "Expression"
 							}
 						}
 					}
