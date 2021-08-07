@@ -51,7 +51,7 @@
 				],
 				"outputs": [
 					{
-						"referenceName": "DS_ASQL_GINFO",
+						"referenceName": "DS_ASQL_GINFO_CF",
 						"type": "DatasetReference"
 					}
 				]
