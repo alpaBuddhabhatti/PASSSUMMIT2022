@@ -11,12 +11,6 @@
 						"dependencyConditions": [
 							"Succeeded"
 						]
-					},
-					{
-						"activity": "Set rundate",
-						"dependencyConditions": [
-							"Succeeded"
-						]
 					}
 				],
 				"userProperties": [],
@@ -66,8 +60,8 @@
 								},
 								"sink": {
 									"type": "AzureSqlSink",
-									"writeBehavior": "insert",
-									"disableMetricsCollection": false
+									"disableMetricsCollection": false,
+									"writeBehavior": "insert"
 								},
 								"enableStaging": false,
 								"translator": {
@@ -123,23 +117,11 @@
 					],
 					"storeSettings": {
 						"type": "AzureBlobStorageReadSettings",
+						"recursive": true,
 						"enablePartitionDiscovery": false
 					},
 					"formatSettings": {
 						"type": "DelimitedTextReadSettings"
-					}
-				}
-			},
-			{
-				"name": "Set rundate",
-				"type": "SetVariable",
-				"dependsOn": [],
-				"userProperties": [],
-				"typeProperties": {
-					"variableName": "strvalue",
-					"value": {
-						"value": "@utcnow()",
-						"type": "Expression"
 					}
 				}
 			}
