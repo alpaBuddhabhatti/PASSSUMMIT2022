@@ -88,7 +88,7 @@
 		"parameters": {
 			"FileName": {
 				"type": "string",
-				"defaultValue": "event"
+				"defaultValue": "events"
 			},
 			"SpecCode": {
 				"type": "string",
