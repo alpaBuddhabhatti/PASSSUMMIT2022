@@ -135,7 +135,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"url": {
-						"value": "@concat('https://azdevstoredgs2021.blob.core.windows.net/feedback-staging/' ,variables('SentimentAnalysis'),'.json')",
+						"value": "@concat('https://azdevstoredgs2021.blob.core.windows.net/feedback-staging/' ,pipeline().parameters.FileName,'.json')",
 						"type": "Expression"
 					},
 					"method": "PUT",
