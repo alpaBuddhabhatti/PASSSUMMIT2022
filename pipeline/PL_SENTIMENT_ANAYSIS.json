@@ -20,7 +20,6 @@
 						"storeSettings": {
 							"type": "AzureBlobStorageReadSettings",
 							"recursive": true,
-							"wildcardFileName": "Customer Feedback.*.csv",
 							"enablePartitionDiscovery": false
 						},
 						"formatSettings": {
