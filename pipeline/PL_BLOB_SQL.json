@@ -76,7 +76,13 @@
 							"inputs": [
 								{
 									"referenceName": "DS_ABLB_IN",
-									"type": "DatasetReference"
+									"type": "DatasetReference",
+									"parameters": {
+										"FileName": {
+											"value": "@item()",
+											"type": "Expression"
+										}
+									}
 								}
 							],
 							"outputs": [
@@ -126,6 +132,12 @@
 				}
 			}
 		],
+		"parameters": {
+			"SpecCode": {
+				"type": "string",
+				"defaultValue": "file"
+			}
+		},
 		"variables": {
 			"strvalue": {
 				"type": "String"
