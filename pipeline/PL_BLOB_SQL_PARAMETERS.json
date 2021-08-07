@@ -30,7 +30,7 @@
 							"type": "AzureBlobStorageReadSettings",
 							"recursive": true,
 							"wildcardFileName": {
-								"value": "@item().name",
+								"value": "@pipeline().parameters.FileName",
 								"type": "Expression"
 							},
 							"enablePartitionDiscovery": false
