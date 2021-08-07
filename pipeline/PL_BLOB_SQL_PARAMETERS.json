@@ -72,13 +72,14 @@
 				],
 				"outputs": [
 					{
-						"referenceName": "DS_ASQL_SINK",
+						"referenceName": "DS_ASQL_SINK_copy",
 						"type": "DatasetReference",
 						"parameters": {
 							"TableName": {
-								"value": "@split(pipeline().parameters.FileName,'.csv')",
+								"value": "@split(pipeline().parameters.FileName,'csv')",
 								"type": "Expression"
-							}
+							},
+							"SchemaName": "dbo"
 						}
 					}
 				]
