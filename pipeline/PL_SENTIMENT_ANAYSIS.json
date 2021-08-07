@@ -180,6 +180,14 @@
 							"SpecCode": {
 								"value": "'@{pipeline().parameters.SpecCode}'",
 								"type": "Expression"
+							},
+							"Runtime": {
+								"value": "'@{variables('FileNameWithTimeStamp')}'",
+								"type": "Expression"
+							},
+							"FileName": {
+								"value": "'@{pipeline().parameters.FileName}'",
+								"type": "Expression"
 							}
 						},
 						"datasetParameters": {
