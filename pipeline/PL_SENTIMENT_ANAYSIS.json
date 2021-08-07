@@ -184,7 +184,22 @@
 						},
 						"datasetParameters": {
 							"CustomerFeedback": {
-								"SpecCode": "feedback"
+								"SpecCode": {
+									"value": "@pipeline().parameters.SpecCode",
+									"type": "Expression"
+								}
+							},
+							"SentimentalAnalysis": {
+								"SpecCode": {
+									"value": "@pipeline().parameters.SpecCode",
+									"type": "Expression"
+								}
+							},
+							"sinkBLOB": {
+								"SpecCode": {
+									"value": "@pipeline().parameters.SpecCode",
+									"type": "Expression"
+								}
 							}
 						}
 					},
