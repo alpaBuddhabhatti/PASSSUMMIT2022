@@ -79,7 +79,7 @@
 									"type": "DatasetReference",
 									"parameters": {
 										"FileName": {
-											"value": "@item().name",
+											"value": "@concat(item().name,'.csv')",
 											"type": "Expression"
 										},
 										"SpecCode": {
@@ -95,9 +95,10 @@
 									"type": "DatasetReference",
 									"parameters": {
 										"TableName": {
-											"value": "@split(item().name,'.csv')",
+											"value": "item().name",
 											"type": "Expression"
-										}
+										},
+										"SchemaName": "dbo"
 									}
 								}
 							]
