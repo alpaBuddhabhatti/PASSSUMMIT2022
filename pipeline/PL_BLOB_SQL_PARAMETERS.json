@@ -16,11 +16,11 @@
 				"userProperties": [
 					{
 						"name": "Source",
-						"value": "file-in//events.csv"
+						"value": "@{concat(pipeline().parameters.SpecCode,'-in')}//@{concat(pipeline().parameters.FileName,'.csv')}"
 					},
 					{
 						"name": "Destination",
-						"value": ".@{split(item().name,'.csv')}"
+						"value": "@{'dbo'}.@{pipeline().parameters.FileName}"
 					}
 				],
 				"typeProperties": {
