@@ -119,7 +119,7 @@
 						]
 					},
 					{
-						"activity": "Set FileName for Staging",
+						"activity": "Set rundate",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -135,7 +135,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"url": {
-						"value": "@concat('https://azdevstoredgs2021.blob.core.windows.net/feedback-staging/' ,pipeline().parameters.FileName,'.json')",
+						"value": "@concat('https://azdevstoredgs2021.blob.core.windows.net/feedback-staging/' ,pipeline().parameters.FileName,'_',variables('FileNameWithTimeStamp'),'.json')",
 						"type": "Expression"
 					},
 					"method": "PUT",
@@ -211,14 +211,14 @@
 				}
 			},
 			{
-				"name": "Set FileName for Staging",
+				"name": "Set rundate",
 				"type": "SetVariable",
 				"dependsOn": [],
 				"userProperties": [],
 				"typeProperties": {
 					"variableName": "FileNameWithTimeStamp",
 					"value": {
-						"value": "@concat(pipeline().parameters.SpecCode,'_',substring(replace(replace(replace(pipeline().TriggerTime,'-',''),':',''),'T','_'),0,15))",
+						"value": "@substring(replace(replace(replace(pipeline().TriggerTime,'-',''),':',''),'T','_'),0,15)",
 						"type": "Expression"
 					}
 				}
