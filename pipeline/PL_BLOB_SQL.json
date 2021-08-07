@@ -120,7 +120,13 @@
 				"typeProperties": {
 					"dataset": {
 						"referenceName": "DS_ABLB_IN_ALL",
-						"type": "DatasetReference"
+						"type": "DatasetReference",
+						"parameters": {
+							"SpecCode": {
+								"value": "@pipeline().parameters.SpecCode",
+								"type": "Expression"
+							}
+						}
 					},
 					"fieldList": [
 						"childItems"
