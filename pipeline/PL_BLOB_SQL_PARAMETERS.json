@@ -60,7 +60,7 @@
 						"type": "DatasetReference",
 						"parameters": {
 							"FileName": {
-								"value": "@pipeline().parameters.FileName",
+								"value": "@concat(pipeline().parameters.FileName,'.csv')",
 								"type": "Expression"
 							},
 							"SpecCode": {
@@ -76,7 +76,7 @@
 						"type": "DatasetReference",
 						"parameters": {
 							"TableName": {
-								"value": "@split(pipeline().parameters.FileName,'csv')",
+								"value": "@pipeline().parameters.FileName",
 								"type": "Expression"
 							},
 							"SchemaName": "dbo"
@@ -88,7 +88,7 @@
 		"parameters": {
 			"FileName": {
 				"type": "string",
-				"defaultValue": "event.csv"
+				"defaultValue": "event"
 			},
 			"SpecCode": {
 				"type": "string",
