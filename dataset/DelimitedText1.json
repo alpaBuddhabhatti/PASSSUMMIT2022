@@ -10,7 +10,6 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobStorageLocation",
-				"fileName": "Customer Feedback.csv",
 				"container": "file-in"
 			},
 			"columnDelimiter": ",",
