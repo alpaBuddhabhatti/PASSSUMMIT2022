@@ -207,6 +207,10 @@
 									"value": "@pipeline().parameters.SpecCode",
 									"type": "Expression"
 								}
+							},
+							"SinkSQLTable": {
+								"TableName": "feedbackreport",
+								"SchemaName": "dbo"
 							}
 						}
 					},
