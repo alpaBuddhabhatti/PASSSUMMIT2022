@@ -257,7 +257,7 @@
 					"url": "https://prod-14.uksouth.logic.azure.com:443/workflows/69a319b95102497ebb0bb28d4abced10/triggers/manual/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=nstnBZt5LcGuqmsGCFYLcj5SG05j6NHnvOEy7T3MKjk",
 					"method": "POST",
 					"body": {
-						"value": "{\n\"Data Factory Name\" : @{pipeline().DataFactory},\n\"Pipeline Name\" : @{pipeline().Pipeline},\n\"Pipeline RunId \": @{pipeline().RunId},\n\"Error Message\" : @{activity('Data Flow').output.error},\n\"Date Time\" : @{pipeline().TriggerTime},\n\n}",
+						"value": "{\n\"Data Factory Name\" : \"@{pipeline().DataFactory}\",\n\"Pipeline Name\" : \"@{pipeline().Pipeline}\",\n\"Pipeline RunId \": \"@{pipeline().RunId}\",\n\"Error Message\" :\"@{activity('Data Flow').output.error}\",\n\"Date Time\" : \"@{pipeline().TriggerTime}\"\n\n}",
 						"type": "Expression"
 					}
 				}
@@ -285,7 +285,7 @@
 					"url": "https://prod-14.uksouth.logic.azure.com:443/workflows/69a319b95102497ebb0bb28d4abced10/triggers/manual/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=nstnBZt5LcGuqmsGCFYLcj5SG05j6NHnvOEy7T3MKjk",
 					"method": "POST",
 					"body": {
-						"value": "{\n\"Data Factory Name\" : @{pipeline().DataFactory},\n\"Pipeline Name\" : @{pipeline().Pipeline},\n\"Pipeline RunId \": @{pipeline().RunId},\n\"Date Time\" : @{pipeline().TriggerTime},\n\n}",
+						"value": "{\n\"Data Factory Name\" : \"@{pipeline().DataFactory}\",\n\"Pipeline Name\" : \"@{pipeline().Pipeline}\",\n\"Pipeline RunId \": \"@{pipeline().RunId}\",\n\"Date Time\" : \"@{pipeline().TriggerTime}\"\n}",
 						"type": "Expression"
 					}
 				}
