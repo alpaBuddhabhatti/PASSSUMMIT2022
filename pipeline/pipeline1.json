@@ -3,11 +3,11 @@
 	"properties": {
 		"activities": [
 			{
-				"name": "powerquery1",
-				"type": "ExecuteWranglingDataflow",
+				"name": "Success - Send Email",
+				"type": "WebActivity",
 				"dependsOn": [],
 				"policy": {
-					"timeout": "1.00:00:00",
+					"timeout": "7.00:00:00",
 					"retry": 0,
 					"retryIntervalInSeconds": 30,
 					"secureOutput": false,
@@ -15,23 +15,11 @@
 				},
 				"userProperties": [],
 				"typeProperties": {
-					"dataflow": {
-						"referenceName": "powerquery1",
-						"type": "DataFlowReference"
-					},
-					"compute": {
-						"coreCount": 8,
-						"computeType": "General"
-					},
-					"sinks": {
-						"UserQuery": {
-							"name": "SinkDelimitedText1",
-							"dataset": {
-								"referenceName": "DelimitedText1",
-								"type": "DatasetReference"
-							},
-							"script": "sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tinput(\n\t\t{Customer ID} as string,\n\t\t{Product } as string,\n\t\tFeedback as string\n\t),\n\tpartitionFileNames:['Customer Feedback1.csv'],\n\tpartitionBy('hash', 1)) ~> SinkDelimitedText1"
-						}
+					"url": "https://prod-14.uksouth.logic.azure.com:443/workflows/69a319b95102497ebb0bb28d4abced10/triggers/manual/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=nstnBZt5LcGuqmsGCFYLcj5SG05j6NHnvOEy7T3MKjk",
+					"method": "POST",
+					"body": {
+						"value": "{\n\"Data Factory Name\" : \"@{pipeline().DataFactory}\",\n\"Pipeline Name\" : \"@{pipeline().Pipeline}\",\n\"Pipeline RunId \": \"@{pipeline().RunId}\",\n\"Date Time\" : \"@{pipeline().TriggerTime}\"\n\n}",
+						"type": "Expression"
 					}
 				}
 			}
