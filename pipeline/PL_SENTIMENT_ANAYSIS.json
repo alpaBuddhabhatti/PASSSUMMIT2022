@@ -231,7 +231,7 @@
 				}
 			},
 			{
-				"name": "Web1",
+				"name": "Failure - Send Email",
 				"type": "WebActivity",
 				"dependsOn": [
 					{
@@ -259,7 +259,7 @@
 				}
 			},
 			{
-				"name": "Web1_copy1",
+				"name": "Success - Send Email",
 				"type": "WebActivity",
 				"dependsOn": [
 					{
