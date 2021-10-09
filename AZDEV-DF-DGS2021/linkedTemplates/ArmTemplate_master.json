@@ -7,17 +7,21 @@
 			"metadata": "Data Factory name",
 			"defaultValue": "AZDEV-DF-DGS2021"
 		},
-		"LS_SF_password": {
+		"AzureBlobStorage1_connectionString": {
 			"type": "secureString",
-			"metadata": "Secure string for 'password' of 'LS_SF'"
+			"metadata": "Secure string for 'connectionString' of 'AzureBlobStorage1'"
 		},
-		"LS_SF_securityToken": {
+		"LS_AF_functionKey": {
 			"type": "secureString",
-			"metadata": "Secure string for 'securityToken' of 'LS_SF'"
+			"metadata": "Secure string for 'functionKey' of 'LS_AF'"
 		},
 		"LS_ABLB_properties_typeProperties_connectionString_secretName": {
 			"type": "string",
 			"defaultValue": "ABLB-CONNECTION"
+		},
+		"LS_AF_properties_typeProperties_functionAppUrl": {
+			"type": "string",
+			"defaultValue": "https://azdev-dps-demo-funapp.azurewebsites.net"
 		},
 		"LS_ASQL_properties_typeProperties_connectionString_secretName": {
 			"type": "string",
@@ -30,14 +34,6 @@
 		"LS_REST_properties_typeProperties_url": {
 			"type": "string",
 			"defaultValue": "https://dummy.restapiexample.com/api/v1/employees"
-		},
-		"LS_SF_properties_typeProperties_environmentUrl": {
-			"type": "string",
-			"defaultValue": "https://clusterreply2.my.salesforce.com"
-		},
-		"LS_SF_properties_typeProperties_username": {
-			"type": "string",
-			"defaultValue": "meetalpa-8dzy@force.com"
 		},
 		"containerUri": {
 			"type": "string",
@@ -66,23 +62,20 @@
 					"factoryName": {
 						"value": "[parameters('factoryName')]"
 					},
-					"LS_SF_password": {
-						"value": "[parameters('LS_SF_password')]"
+					"AzureBlobStorage1_connectionString": {
+						"value": "[parameters('AzureBlobStorage1_connectionString')]"
 					},
-					"LS_SF_securityToken": {
-						"value": "[parameters('LS_SF_securityToken')]"
+					"LS_AF_functionKey": {
+						"value": "[parameters('LS_AF_functionKey')]"
+					},
+					"LS_AF_properties_typeProperties_functionAppUrl": {
+						"value": "[parameters('LS_AF_properties_typeProperties_functionAppUrl')]"
 					},
 					"LS_KV_properties_typeProperties_baseUrl": {
 						"value": "[parameters('LS_KV_properties_typeProperties_baseUrl')]"
 					},
 					"LS_REST_properties_typeProperties_url": {
 						"value": "[parameters('LS_REST_properties_typeProperties_url')]"
-					},
-					"LS_SF_properties_typeProperties_environmentUrl": {
-						"value": "[parameters('LS_SF_properties_typeProperties_environmentUrl')]"
-					},
-					"LS_SF_properties_typeProperties_username": {
-						"value": "[parameters('LS_SF_properties_typeProperties_username')]"
 					},
 					"LS_ABLB_properties_typeProperties_connectionString_secretName": {
 						"value": "[parameters('LS_ABLB_properties_typeProperties_connectionString_secretName')]"

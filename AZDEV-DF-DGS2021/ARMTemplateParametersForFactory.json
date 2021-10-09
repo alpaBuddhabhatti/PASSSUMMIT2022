@@ -5,14 +5,17 @@
 		"factoryName": {
 			"value": "AZDEV-DF-DGS2021"
 		},
-		"LS_SF_password": {
+		"AzureBlobStorage1_connectionString": {
 			"value": ""
 		},
-		"LS_SF_securityToken": {
+		"LS_AF_functionKey": {
 			"value": ""
 		},
 		"LS_ABLB_properties_typeProperties_connectionString_secretName": {
 			"value": "ABLB-CONNECTION"
+		},
+		"LS_AF_properties_typeProperties_functionAppUrl": {
+			"value": "https://azdev-dps-demo-funapp.azurewebsites.net"
 		},
 		"LS_ASQL_properties_typeProperties_connectionString_secretName": {
 			"value": "ASQL-DB-CONNECTION"
@@ -22,12 +25,6 @@
 		},
 		"LS_REST_properties_typeProperties_url": {
 			"value": "https://dummy.restapiexample.com/api/v1/employees"
-		},
-		"LS_SF_properties_typeProperties_environmentUrl": {
-			"value": "https://clusterreply2.my.salesforce.com"
-		},
-		"LS_SF_properties_typeProperties_username": {
-			"value": "meetalpa-8dzy@force.com"
 		}
 	}
 }
