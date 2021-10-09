@@ -60,6 +60,7 @@
 								},
 								"sink": {
 									"type": "AzureSqlSink",
+									"tableOption": "autoCreate",
 									"disableMetricsCollection": false,
 									"writeBehavior": "insert"
 								},
