@@ -178,7 +178,10 @@
 				"typeProperties": {
 					"functionName": " CreateManifest",
 					"method": "POST",
-					"body": []
+					"body": {
+						"value": "@variables('ListOfFiles')",
+						"type": "Expression"
+					}
 				},
 				"linkedServiceName": {
 					"referenceName": "LS_AF",
