@@ -18,10 +18,6 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobStorageLocation",
-				"fileName": {
-					"value": "@concat(dataset().FileName,'.jpg')",
-					"type": "Expression"
-				},
 				"container": {
 					"value": "@concat(dataset().SpecCode,'-staging')",
 					"type": "Expression"
