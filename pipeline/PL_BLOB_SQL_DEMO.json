@@ -118,7 +118,10 @@
 							"userProperties": [],
 							"typeProperties": {
 								"variableName": "RowsArray",
-								"value": ""
+								"value": {
+									"value": "@concat(item(),'|',string(activity('Copy data').output.rowsCopied))",
+									"type": "Expression"
+								}
 							}
 						}
 					]
