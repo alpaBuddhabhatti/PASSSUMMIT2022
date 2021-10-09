@@ -1,5 +1,5 @@
 {
-	"name": "LS_ABLB_BINARY",
+	"name": "LS_ABLB_BINARY_IN",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "LS_ABLB",
