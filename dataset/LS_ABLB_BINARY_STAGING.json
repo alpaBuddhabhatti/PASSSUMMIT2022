@@ -8,9 +8,6 @@
 		"parameters": {
 			"SpecCode": {
 				"type": "string"
-			},
-			"FileName": {
-				"type": "string"
 			}
 		},
 		"annotations": [],
