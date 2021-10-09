@@ -1,0 +1,32 @@
+{
+	"name": "LS_ABLB_BINARY_STAGING",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "LS_ABLB",
+			"type": "LinkedServiceReference"
+		},
+		"parameters": {
+			"SpecCode": {
+				"type": "string"
+			},
+			"FileName": {
+				"type": "string"
+			}
+		},
+		"annotations": [],
+		"type": "Binary",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"fileName": {
+					"value": "@concat(dataset().FileName,'.jpg')",
+					"type": "Expression"
+				},
+				"container": {
+					"value": "@concat(dataset().SpecCode,'-staging')",
+					"type": "Expression"
+				}
+			}
+		}
+	}
+}
