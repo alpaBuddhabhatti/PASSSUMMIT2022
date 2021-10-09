@@ -3,41 +3,6 @@
 	"properties": {
 		"activities": [
 			{
-				"name": "For Each File",
-				"type": "ForEach",
-				"dependsOn": [
-					{
-						"activity": "Lookup",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					}
-				],
-				"userProperties": [],
-				"typeProperties": {
-					"items": {
-						"value": "@activity('Lookup').output.childitems",
-						"type": "Expression"
-					},
-					"batchCount": 2,
-					"activities": [
-						{
-							"name": "Append variable",
-							"type": "AppendVariable",
-							"dependsOn": [],
-							"userProperties": [],
-							"typeProperties": {
-								"variableName": "RowsArray",
-								"value": {
-									"value": "@concat(item().name_of_file,'|',string(item().row_count))",
-									"type": "Expression"
-								}
-							}
-						}
-					]
-				}
-			},
-			{
 				"name": "Lookup",
 				"type": "Lookup",
 				"dependsOn": [],
@@ -76,11 +41,11 @@
 				}
 			},
 			{
-				"name": "Copy data",
+				"name": "Copy data file",
 				"type": "Copy",
 				"dependsOn": [
 					{
-						"activity": "Create Manifest",
+						"activity": "ForEach",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -170,7 +135,7 @@
 				"type": "WebActivity",
 				"dependsOn": [
 					{
-						"activity": "Copy data",
+						"activity": "Copy data file",
 						"dependencyConditions": [
 							"Failed"
 						]
@@ -188,7 +153,7 @@
 					"url": "https://prod-14.uksouth.logic.azure.com:443/workflows/69a319b95102497ebb0bb28d4abced10/triggers/manual/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=nstnBZt5LcGuqmsGCFYLcj5SG05j6NHnvOEy7T3MKjk",
 					"method": "POST",
 					"body": {
-						"value": "{\n\"title\": \"PIPELINE RUN FINISHED\",\n\"dataFactoryName\" : \"@{pipeline().DataFactory}\",\n\"pipelineName\" : \"@{pipeline().Pipeline}\",\n\"pipelineRunId\": \"@{pipeline().RunId}\",\n\"message\":\"@{activity('Copy data').output.error}\",\n\"time\" : \"@{pipeline().TriggerTime}\",\n\"color\":\"Red\"\n}\n",
+						"value": "{\n\"title\": \"PIPELINE RUN FINISHED\",\n\"dataFactoryName\" : \"@{pipeline().DataFactory}\",\n\"pipelineName\" : \"@{pipeline().Pipeline}\",\n\"pipelineRunId\": \"@{pipeline().RunId}\",\n\"message\":\"@{activity('Copy data file').output.error}\",\n\"time\" : \"@{pipeline().TriggerTime}\",\n\"color\":\"Red\"\n}\n",
 						"type": "Expression"
 					}
 				}
@@ -198,7 +163,7 @@
 				"type": "WebActivity",
 				"dependsOn": [
 					{
-						"activity": "Copy data",
+						"activity": "Copy data file",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -222,24 +187,85 @@
 				}
 			},
 			{
-				"name": "Create Manifest",
-				"type": "AzureFunctionActivity",
+				"name": "ForEach",
+				"type": "ForEach",
 				"dependsOn": [
 					{
-						"activity": "For Each File",
+						"activity": "Lookup",
 						"dependencyConditions": [
 							"Succeeded"
 						]
 					}
 				],
-				"policy": {
-					"timeout": "7.00:00:00",
-					"retry": 0,
-					"retryIntervalInSeconds": 30,
-					"secureOutput": false,
-					"secureInput": false
-				},
-				"userProperties": []
+				"userProperties": [],
+				"typeProperties": {
+					"items": {
+						"value": "@activity('Lookup').output",
+						"type": "Expression"
+					},
+					"activities": [
+						{
+							"name": "Copy data",
+							"type": "Copy",
+							"dependsOn": [],
+							"policy": {
+								"timeout": "7.00:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"source": {
+									"type": "BinarySource",
+									"storeSettings": {
+										"type": "AzureBlobStorageReadSettings",
+										"recursive": true
+									},
+									"formatSettings": {
+										"type": "BinaryReadSettings"
+									}
+								},
+								"sink": {
+									"type": "BinarySink",
+									"storeSettings": {
+										"type": "AzureBlobStorageWriteSettings"
+									}
+								},
+								"enableStaging": false
+							},
+							"inputs": [
+								{
+									"referenceName": "LS_ABLB_BINARY_IN",
+									"type": "DatasetReference",
+									"parameters": {
+										"SpecCode": {
+											"value": "@pipeline().parameters.SpecCode",
+											"type": "Expression"
+										},
+										"FileName": {
+											"value": "@pipeline().parameters.FileName",
+											"type": "Expression"
+										}
+									}
+								}
+							],
+							"outputs": [
+								{
+									"referenceName": "LS_ABLB_BINARY_STAGING",
+									"type": "DatasetReference",
+									"parameters": {
+										"SpecCode": {
+											"value": "@pipeline().parameters.SpecCode",
+											"type": "Expression"
+										}
+									}
+								}
+							]
+						}
+					]
+				}
 			}
 		],
 		"parameters": {
