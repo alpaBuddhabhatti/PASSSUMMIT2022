@@ -22,17 +22,17 @@
 					"batchCount": 2,
 					"activities": [
 						{
-							"name": "Resizing Image",
-							"type": "AzureFunctionActivity",
+							"name": "Append variable",
+							"type": "AppendVariable",
 							"dependsOn": [],
-							"policy": {
-								"timeout": "7.00:00:00",
-								"retry": 0,
-								"retryIntervalInSeconds": 30,
-								"secureOutput": false,
-								"secureInput": false
-							},
-							"userProperties": []
+							"userProperties": [],
+							"typeProperties": {
+								"variableName": "RowsArray",
+								"value": {
+									"value": "@concat(item().name_of_file,'|',string(item().row_count))",
+									"type": "Expression"
+								}
+							}
 						}
 					]
 				}
@@ -235,6 +235,10 @@
 		"variables": {
 			"strvalue": {
 				"type": "String"
+			},
+			"RowsArray": {
+				"type": "Array",
+				"defaultValue": []
 			}
 		},
 		"folder": {
