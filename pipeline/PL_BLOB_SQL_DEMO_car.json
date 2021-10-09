@@ -7,7 +7,7 @@
 				"type": "ForEach",
 				"dependsOn": [
 					{
-						"activity": "Get All Files",
+						"activity": "Lookup",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -16,156 +16,15 @@
 				"userProperties": [],
 				"typeProperties": {
 					"items": {
-						"value": "@activity('Get All Files').output.childitems",
+						"value": "@activity('Lookup').output.childitems",
 						"type": "Expression"
 					},
-					"batchCount": 2,
-					"activities": [
-						{
-							"name": "Copy data",
-							"type": "Copy",
-							"dependsOn": [],
-							"policy": {
-								"timeout": "7.00:00:00",
-								"retry": 0,
-								"retryIntervalInSeconds": 30,
-								"secureOutput": false,
-								"secureInput": false
-							},
-							"userProperties": [
-								{
-									"name": "Source",
-									"value": "file-in//events.csv"
-								},
-								{
-									"name": "Destination",
-									"value": ".@{split(item().name,'.csv')}"
-								}
-							],
-							"typeProperties": {
-								"source": {
-									"type": "DelimitedTextSource",
-									"storeSettings": {
-										"type": "AzureBlobStorageReadSettings",
-										"recursive": true,
-										"wildcardFileName": {
-											"value": "@item().name",
-											"type": "Expression"
-										},
-										"enablePartitionDiscovery": false
-									},
-									"formatSettings": {
-										"type": "DelimitedTextReadSettings"
-									}
-								},
-								"sink": {
-									"type": "AzureSqlSink",
-									"tableOption": "autoCreate",
-									"disableMetricsCollection": false,
-									"writeBehavior": "insert"
-								},
-								"enableStaging": false,
-								"translator": {
-									"type": "TabularTranslator",
-									"typeConversion": true,
-									"typeConversionSettings": {
-										"allowDataTruncation": true,
-										"treatBooleanAsNumber": false
-									}
-								}
-							},
-							"inputs": [
-								{
-									"referenceName": "DS_ABLB_IN",
-									"type": "DatasetReference",
-									"parameters": {
-										"FileName": {
-											"value": "@concat(item().name,'.csv')",
-											"type": "Expression"
-										},
-										"SpecCode": {
-											"value": "@pipeline().parameters.SpecCode",
-											"type": "Expression"
-										}
-									}
-								}
-							],
-							"outputs": [
-								{
-									"referenceName": "DS_ASQL_SINK",
-									"type": "DatasetReference",
-									"parameters": {
-										"TableName": {
-											"value": "@trim(replace(item().name,'.csv',''))",
-											"type": "Expression"
-										},
-										"SchemaName": "dbo"
-									}
-								}
-							]
-						},
-						{
-							"name": "Failure - Send Email",
-							"type": "WebActivity",
-							"dependsOn": [
-								{
-									"activity": "Copy data",
-									"dependencyConditions": [
-										"Failed"
-									]
-								}
-							],
-							"policy": {
-								"timeout": "7.00:00:00",
-								"retry": 0,
-								"retryIntervalInSeconds": 30,
-								"secureOutput": false,
-								"secureInput": false
-							},
-							"userProperties": [],
-							"typeProperties": {
-								"url": "https://prod-14.uksouth.logic.azure.com:443/workflows/69a319b95102497ebb0bb28d4abced10/triggers/manual/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=nstnBZt5LcGuqmsGCFYLcj5SG05j6NHnvOEy7T3MKjk",
-								"method": "POST",
-								"body": {
-									"value": "{\n\"title\": \"PIPELINE RUN FINISHED\",\n\"dataFactoryName\" : \"@{pipeline().DataFactory}\",\n\"pipelineName\" : \"@{pipeline().Pipeline}\",\n\"pipelineRunId\": \"@{pipeline().RunId}\",\n\"message\":\"@{activity('Copy data').output.error}\",\n\"time\" : \"@{pipeline().TriggerTime}\",\n\"color\":\"Red\"\n}\n",
-									"type": "Expression"
-								}
-							}
-						},
-						{
-							"name": "Success - Send Email",
-							"type": "WebActivity",
-							"dependsOn": [
-								{
-									"activity": "Copy data",
-									"dependencyConditions": [
-										"Succeeded"
-									]
-								}
-							],
-							"policy": {
-								"timeout": "7.00:00:00",
-								"retry": 0,
-								"retryIntervalInSeconds": 30,
-								"secureOutput": false,
-								"secureInput": false
-							},
-							"userProperties": [],
-							"typeProperties": {
-								"url": "https://prod-14.uksouth.logic.azure.com:443/workflows/69a319b95102497ebb0bb28d4abced10/triggers/manual/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=nstnBZt5LcGuqmsGCFYLcj5SG05j6NHnvOEy7T3MKjk",
-								"method": "POST",
-								"body": {
-									"value": "{\n\"title\": \"PIPELINE RUN FINISHED\",\n\"dataFactoryName\" : \"@{pipeline().DataFactory}\",\n\"pipelineName\" : \"@{pipeline().Pipeline}\",\n\"pipelineRunId\": \"@{pipeline().RunId}\",\n\"message\":\"\",\n\"time\" : \"@{pipeline().TriggerTime}\",\n\"color\":\"Green\"\n}\n",
-									"type": "Expression"
-								}
-							}
-						}
-					]
+					"batchCount": 2
 				}
 			},
 			{
-				"name": "Get All Files",
-				"type": "GetMetadata",
+				"name": "Lookup",
+				"type": "Lookup",
 				"dependsOn": [],
 				"policy": {
 					"timeout": "7.00:00:00",
@@ -176,26 +35,174 @@
 				},
 				"userProperties": [],
 				"typeProperties": {
+					"source": {
+						"type": "DelimitedTextSource",
+						"storeSettings": {
+							"type": "AzureBlobStorageReadSettings",
+							"recursive": true,
+							"enablePartitionDiscovery": false
+						},
+						"formatSettings": {
+							"type": "DelimitedTextReadSettings"
+						}
+					},
 					"dataset": {
-						"referenceName": "DS_ABLB_IN_ALL",
+						"referenceName": "DS_ABLB_IN",
 						"type": "DatasetReference",
 						"parameters": {
+							"FileName": "cars.csv",
 							"SpecCode": {
 								"value": "@pipeline().parameters.SpecCode",
 								"type": "Expression"
 							}
 						}
 					},
-					"fieldList": [
-						"childItems"
-					],
-					"storeSettings": {
-						"type": "AzureBlobStorageReadSettings",
-						"recursive": true,
-						"enablePartitionDiscovery": false
+					"firstRowOnly": false
+				}
+			},
+			{
+				"name": "Copy data",
+				"type": "Copy",
+				"dependsOn": [
+					{
+						"activity": "For Each File",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [
+					{
+						"name": "Source",
+						"value": "file-in//events.csv"
 					},
-					"formatSettings": {
-						"type": "DelimitedTextReadSettings"
+					{
+						"name": "Destination",
+						"value": ".@{split(item().name,'.csv')}"
+					}
+				],
+				"typeProperties": {
+					"source": {
+						"type": "DelimitedTextSource",
+						"storeSettings": {
+							"type": "AzureBlobStorageReadSettings",
+							"recursive": true,
+							"wildcardFileName": {
+								"value": "@pipeline().parameters.FileName",
+								"type": "Expression"
+							},
+							"enablePartitionDiscovery": false
+						},
+						"formatSettings": {
+							"type": "DelimitedTextReadSettings"
+						}
+					},
+					"sink": {
+						"type": "AzureSqlSink",
+						"tableOption": "autoCreate",
+						"disableMetricsCollection": false,
+						"writeBehavior": "insert"
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"typeConversion": true,
+						"typeConversionSettings": {
+							"allowDataTruncation": true,
+							"treatBooleanAsNumber": false
+						}
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "DS_ABLB_IN",
+						"type": "DatasetReference",
+						"parameters": {
+							"FileName": {
+								"value": "@pipeline().parameters.FileName",
+								"type": "Expression"
+							},
+							"SpecCode": {
+								"value": "@pipeline().parameters.SpecCode",
+								"type": "Expression"
+							}
+						}
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "DS_ASQL_SINK",
+						"type": "DatasetReference",
+						"parameters": {
+							"TableName": {
+								"value": "@trim(replace(pipeline().parameters.FileName,'.csv',''))",
+								"type": "Expression"
+							},
+							"SchemaName": "dbo"
+						}
+					}
+				]
+			},
+			{
+				"name": "Failure - Send Email",
+				"type": "WebActivity",
+				"dependsOn": [
+					{
+						"activity": "Copy data",
+						"dependencyConditions": [
+							"Failed"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"url": "https://prod-14.uksouth.logic.azure.com:443/workflows/69a319b95102497ebb0bb28d4abced10/triggers/manual/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=nstnBZt5LcGuqmsGCFYLcj5SG05j6NHnvOEy7T3MKjk",
+					"method": "POST",
+					"body": {
+						"value": "{\n\"title\": \"PIPELINE RUN FINISHED\",\n\"dataFactoryName\" : \"@{pipeline().DataFactory}\",\n\"pipelineName\" : \"@{pipeline().Pipeline}\",\n\"pipelineRunId\": \"@{pipeline().RunId}\",\n\"message\":\"@{activity('Copy data').output.error}\",\n\"time\" : \"@{pipeline().TriggerTime}\",\n\"color\":\"Red\"\n}\n",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "Success - Send Email",
+				"type": "WebActivity",
+				"dependsOn": [
+					{
+						"activity": "Copy data",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"url": "https://prod-14.uksouth.logic.azure.com:443/workflows/69a319b95102497ebb0bb28d4abced10/triggers/manual/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=nstnBZt5LcGuqmsGCFYLcj5SG05j6NHnvOEy7T3MKjk",
+					"method": "POST",
+					"body": {
+						"value": "{\n\"title\": \"PIPELINE RUN FINISHED\",\n\"dataFactoryName\" : \"@{pipeline().DataFactory}\",\n\"pipelineName\" : \"@{pipeline().Pipeline}\",\n\"pipelineRunId\": \"@{pipeline().RunId}\",\n\"message\":\"\",\n\"time\" : \"@{pipeline().TriggerTime}\",\n\"color\":\"Green\"\n}\n",
+						"type": "Expression"
 					}
 				}
 			}
@@ -204,6 +211,10 @@
 			"SpecCode": {
 				"type": "string",
 				"defaultValue": "file"
+			},
+			"FileName": {
+				"type": "string",
+				"defaultValue": "cars.csv"
 			}
 		},
 		"variables": {
