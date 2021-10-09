@@ -186,7 +186,7 @@
 					"functionName": " CreateManifest",
 					"method": "POST",
 					"body": {
-						"value": "@json(concat('{\"name\":\"file-in\",\"values\":',variables('RowsArray')))",
+						"value": "@json(concat('{\"name\":\"file-in\",\"values\":',variables('RowsArray')))\n",
 						"type": "Expression"
 					}
 				},
