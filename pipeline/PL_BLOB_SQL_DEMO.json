@@ -119,7 +119,7 @@
 							"typeProperties": {
 								"variableName": "RowsArray",
 								"value": {
-									"value": "@concat(item(),'|',string(activity('Copy data').output.rowsCopied))",
+									"value": "@concat(item().name,'|',string(activity('Copy data').output.rowsCopied))",
 									"type": "Expression"
 								}
 							}
