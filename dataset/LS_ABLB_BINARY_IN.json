@@ -23,7 +23,7 @@
 					"type": "Expression"
 				},
 				"container": {
-					"value": "@concat(dataset().SpecCode,'-staging')",
+					"value": "@concat(dataset().SpecCode,'-in')",
 					"type": "Expression"
 				}
 			}
