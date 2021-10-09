@@ -102,6 +102,62 @@
 									}
 								}
 							]
+						},
+						{
+							"name": "Failure - Send Email",
+							"type": "WebActivity",
+							"dependsOn": [
+								{
+									"activity": "Copy data",
+									"dependencyConditions": [
+										"Failed"
+									]
+								}
+							],
+							"policy": {
+								"timeout": "7.00:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"url": "https://prod-14.uksouth.logic.azure.com:443/workflows/69a319b95102497ebb0bb28d4abced10/triggers/manual/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=nstnBZt5LcGuqmsGCFYLcj5SG05j6NHnvOEy7T3MKjk",
+								"method": "POST",
+								"body": {
+									"value": "{\n\"title\": \"PIPELINE RUN FINISHED\",\n\"dataFactoryName\" : \"@{pipeline().DataFactory}\",\n\"pipelineName\" : \"@{pipeline().Pipeline}\",\n\"pipelineRunId\": \"@{pipeline().RunId}\",\n\"message\":\"@{activity('Data Flow').output.error}\",\n\"time\" : \"@{pipeline().TriggerTime}\"\n}\n",
+									"type": "Expression"
+								}
+							}
+						},
+						{
+							"name": "Success - Send Email",
+							"type": "WebActivity",
+							"dependsOn": [
+								{
+									"activity": "Copy data",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"policy": {
+								"timeout": "7.00:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"url": "https://prod-14.uksouth.logic.azure.com:443/workflows/69a319b95102497ebb0bb28d4abced10/triggers/manual/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=nstnBZt5LcGuqmsGCFYLcj5SG05j6NHnvOEy7T3MKjk",
+								"method": "POST",
+								"body": {
+									"value": "{\n\"title\": \"PIPELINE RUN FINISHED\",\n\"dataFactoryName\" : \"@{pipeline().DataFactory}\",\n\"pipelineName\" : \"@{pipeline().Pipeline}\",\n\"pipelineRunId\": \"@{pipeline().RunId}\",\n\"message\":\"\",\n\"time\" : \"@{pipeline().TriggerTime}\"\n}\n",
+									"type": "Expression"
+								}
+							}
 						}
 					]
 				}
