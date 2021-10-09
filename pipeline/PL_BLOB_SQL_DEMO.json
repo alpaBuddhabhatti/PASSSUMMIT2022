@@ -115,7 +115,11 @@
 									]
 								}
 							],
-							"userProperties": []
+							"userProperties": [],
+							"typeProperties": {
+								"variableName": "RowsArray",
+								"value": ""
+							}
 						}
 					]
 				}
@@ -179,7 +183,7 @@
 					"functionName": " CreateManifest",
 					"method": "POST",
 					"body": {
-						"value": "@variables('ListOfFiles')",
+						"value": "json(concat('{\"name\":\"file-in\",\"values\":',variables('RowsArray')))",
 						"type": "Expression"
 					}
 				},
@@ -255,7 +259,7 @@
 			"strvalue": {
 				"type": "String"
 			},
-			"ListOfFiles": {
+			"RowsArray": {
 				"type": "Array",
 				"defaultValue": []
 			}
