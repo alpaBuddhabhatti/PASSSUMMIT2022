@@ -200,7 +200,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"items": {
-						"value": "@activity('Lookup').output",
+						"value": "@activity('Lookup').output.value.FileName",
 						"type": "Expression"
 					},
 					"activities": [
@@ -245,7 +245,7 @@
 											"type": "Expression"
 										},
 										"FileName": {
-											"value": "@pipeline().parameters.FileName",
+											"value": "@item()",
 											"type": "Expression"
 										}
 									}
