@@ -183,7 +183,7 @@
 				},
 				"userProperties": [],
 				"typeProperties": {
-					"functionName": " HelloFunction",
+					"functionName": "CreateManifest",
 					"method": "POST",
 					"body": {
 						"value": "@json(concat('{\"name\":\"file-in\",\"values\":',variables('RowsArray')))",
