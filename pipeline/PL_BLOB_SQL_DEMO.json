@@ -184,7 +184,11 @@
 				"userProperties": [],
 				"typeProperties": {
 					"functionName": " HelloFunction",
-					"method": "GET"
+					"method": "POST",
+					"body": {
+						"value": "@json(concat('{\"name\":\"file-in\",\"values\":',variables('RowsArray')))",
+						"type": "Expression"
+					}
 				},
 				"linkedServiceName": {
 					"referenceName": "LS_AF",
