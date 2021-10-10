@@ -16,7 +16,7 @@
 			"location": {
 				"type": "AzureBlobStorageLocation",
 				"container": {
-					"value": "@concat(dataset().SpecCode,'-staging')",
+					"value": "input",
 					"type": "Expression"
 				}
 			}
