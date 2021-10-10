@@ -1,13 +1,20 @@
 {
 	"name": "LS_AF",
-	"type": "Microsoft.DataFactory/factories/linkedservices",
 	"properties": {
 		"annotations": [],
 		"type": "AzureFunction",
 		"typeProperties": {
 			"functionAppUrl": "https://azdev-dps-demo-funapp.azurewebsites.net",
-			"authentication": "Anonymous",
-			"encryptedCredential": "ew0KICAiVmVyc2lvbiI6ICIyMDE3LTExLTMwIiwNCiAgIlByb3RlY3Rpb25Nb2RlIjogIktleSIsDQogICJTZWNyZXRDb250ZW50VHlwZSI6ICJQbGFpbnRleHQiLA0KICAiQ3JlZGVudGlhbElkIjogIkFaREVWLURGLURHUzIwMjFfODBkZmE5MTEtMjYyNi00NjI4LWIwN2YtZWVhYWZhMmFhN2IyIg0KfQ=="
+			"functionKey": {
+				"type": "AzureKeyVaultSecret",
+				"store": {
+					"referenceName": "LS_KV",
+					"type": "LinkedServiceReference"
+				},
+				"secretName": "AF-KEY"
+			},
+			"authentication": "Anonymous"
 		}
-	}
+	},
+	"type": "Microsoft.DataFactory/factories/linkedservices"
 }
