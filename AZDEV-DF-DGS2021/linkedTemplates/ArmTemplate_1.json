@@ -642,7 +642,7 @@
 							}
 						},
 						"linkedServiceName": {
-							"referenceName": "AzureFunction1",
+							"referenceName": "LS_AF",
 							"type": "LinkedServiceReference"
 						}
 					},

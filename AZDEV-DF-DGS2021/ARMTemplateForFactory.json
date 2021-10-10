@@ -418,7 +418,7 @@
 							}
 						},
 						"linkedServiceName": {
-							"referenceName": "AzureFunction1",
+							"referenceName": "LS_AF",
 							"type": "LinkedServiceReference"
 						}
 					},
@@ -508,7 +508,7 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/DS_ABLB_IN_ALL')]",
-				"[concat(variables('factoryId'), '/linkedServices/AzureFunction1')]",
+				"[concat(variables('factoryId'), '/linkedServices/LS_AF')]",
 				"[concat(variables('factoryId'), '/datasets/DS_ABLB_IN')]",
 				"[concat(variables('factoryId'), '/datasets/DS_ASQL_SINK')]"
 			]
