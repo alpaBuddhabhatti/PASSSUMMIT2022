@@ -13,6 +13,27 @@
 	},
 	"resources": [
 		{
+			"name": "[concat(parameters('factoryName'), '/DS_ASQL')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "LS_ASQL",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "DEMO 1"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [],
+				"typeProperties": {
+					"table": "EMP"
+				}
+			},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/DS_ASQL_DF')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -612,12 +633,16 @@
 						},
 						"userProperties": [],
 						"typeProperties": {
-							"functionName": " HelloFunction",
-							"method": "GET",
-							"headers": {}
+							"functionName": "CreateManifest",
+							"method": "POST",
+							"headers": {},
+							"body": {
+								"value": "@json(concat('{\"name\":\"file-in\",\"values\":',variables('RowsArray')))",
+								"type": "Expression"
+							}
 						},
 						"linkedServiceName": {
-							"referenceName": "LS_AF",
+							"referenceName": "AzureFunction1",
 							"type": "LinkedServiceReference"
 						}
 					},
@@ -645,7 +670,7 @@
 							"method": "POST",
 							"headers": {},
 							"body": {
-								"value": "{\n\"title\": \"PIPELINE RUN FINISHED\",\n\"dataFactoryName\" : \"@{pipeline().DataFactory}\",\n\"pipelineName\" : \"@{pipeline().Pipeline}\",\n\"pipelineRunId\": \"@{pipeline().RunId}\",\n\"message\":\"@{activity('Create Manifest').error}\",\n\"time\" : \"@{pipeline().TriggerTime}\",\n\"color\":\"Red\"\n}\n",
+								"value": "{\n\"title\": \"PIPELINE RUN FINISHED\",\n\"dataFactoryName\" : \"@{pipeline().DataFactory}\",\n\"pipelineName\" : \"@{pipeline().Pipeline}\",\n\"pipelineRunId\": \"@{pipeline().RunId}\",\n\"message\":\"@{activity('Create Manifest').error.message}\",\n\"time\" : \"@{pipeline().TriggerTime}\",\n\"color\":\"Red\"\n}\n",
 								"type": "Expression"
 							}
 						}
@@ -1490,7 +1515,9 @@
 					"script": "source(output(\n\t\tstatus as string,\n\t\tdata as (id as string, employee_name as string, employee_salary as string, employee_age as string, profile_image as string)[],\n\t\tmessage as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false,\n\tdocumentForm: 'documentPerLine') ~> source\nsource foldDown(unroll(data, data),\n\tmapColumn(\n\t\tstatus,\n\t\tdata,\n\t\tmessage\n\t),\n\tskipDuplicateMapInputs: false,\n\tskipDuplicateMapOutputs: false) ~> Flatten\nFlatten sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tdeletable:false,\n\tinsertable:true,\n\tupdateable:false,\n\tupsertable:false,\n\tformat: 'table',\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true,\n\terrorHandlingOption: 'stopOnFirstError',\n\tmapColumn(\n\t\tdata = data.id,\n\t\temployee_name = data.employee_name,\n\t\temployee_salary = data.employee_salary,\n\t\temployee_age = data.employee_age,\n\t\tprofile_image = data.profile_image\n\t)) ~> sinkASQL"
 				}
 			},
-			"dependsOn": []
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/DS_ASQL')]"
+			]
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/PL_DATAMOVEMENT')]",
@@ -1594,335 +1621,6 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/dataflows/DF_TRANSORM')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/PL_SENTIMENT_ANAYSIS')]",
-			"type": "Microsoft.DataFactory/factories/pipelines",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"activities": [
-					{
-						"name": "Feedback records",
-						"type": "Lookup",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "7.00:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"source": {
-								"type": "DelimitedTextSource",
-								"storeSettings": {
-									"type": "AzureBlobStorageReadSettings",
-									"recursive": true,
-									"enablePartitionDiscovery": false
-								},
-								"formatSettings": {
-									"type": "DelimitedTextReadSettings"
-								}
-							},
-							"dataset": {
-								"referenceName": "DS_ABLB_FEEDBACK_IN",
-								"type": "DatasetReference",
-								"parameters": {
-									"SpecCode": {
-										"value": "@pipeline().parameters.SpecCode",
-										"type": "Expression"
-									}
-								}
-							},
-							"firstRowOnly": false
-						}
-					},
-					{
-						"name": "For Each Feedback",
-						"type": "ForEach",
-						"dependsOn": [
-							{
-								"activity": "Feedback records",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"userProperties": [],
-						"typeProperties": {
-							"items": {
-								"value": "@activity('Feedback records').output.value\n\n",
-								"type": "Expression"
-							},
-							"batchCount": 10,
-							"activities": [
-								{
-									"name": "Sentiment Analysis",
-									"type": "WebActivity",
-									"dependsOn": [],
-									"policy": {
-										"timeout": "7.00:00:00",
-										"retry": 0,
-										"retryIntervalInSeconds": 30,
-										"secureOutput": false,
-										"secureInput": false
-									},
-									"userProperties": [],
-									"typeProperties": {
-										"url": "https://dsp2021-sentiment.cognitiveservices.azure.com/text/analytics/v3.0/sentiment",
-										"method": "POST",
-										"headers": {
-											"Ocp-Apim-Subscription-Key": "6dbd673a9cf645e89fcb8c0cf1fd751b",
-											"Content-Type": "application/json",
-											"Accept": "application/json"
-										},
-										"body": {
-											"value": "@concat('{\"documents\":[\n\t                     {\n\t\t\t\t\t\t  \"language\": \"en\",\"id\": \"',\n\t                         item().CustomerID ,\n\t\t\t\t\t\t\t'\", \"text\": \"' , item().Feedback ,'\"\n\t\t\t\t\t\t }\n\t\t\t\t\t\t ]\n\t\t\t\t\t\t }')",
-											"type": "Expression"
-										}
-									}
-								},
-								{
-									"name": "Results",
-									"type": "AppendVariable",
-									"dependsOn": [
-										{
-											"activity": "Sentiment Analysis",
-											"dependencyConditions": [
-												"Succeeded"
-											]
-										}
-									],
-									"userProperties": [],
-									"typeProperties": {
-										"variableName": "SentimentAnalysis",
-										"value": {
-											"value": "@json(concat('{\"id\":','\"',activity('Sentiment Analysis').output.documents[0].id,\n'\",\"sentiment\": \"',activity('Sentiment Analysis').output.documents[0].sentiment ,\n'\" }'))",
-											"type": "Expression"
-										}
-									}
-								}
-							]
-						}
-					},
-					{
-						"name": "Writing To blob",
-						"type": "WebActivity",
-						"dependsOn": [
-							{
-								"activity": "For Each Feedback",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							},
-							{
-								"activity": "Set rundate",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"policy": {
-							"timeout": "7.00:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"url": {
-								"value": "@concat('https://azdevstoredgs2021.blob.core.windows.net/feedback-staging/' ,pipeline().parameters.FileName,'_',variables('FileNameWithTimeStamp'),'.json')",
-								"type": "Expression"
-							},
-							"method": "PUT",
-							"headers": {
-								"x-ms-version": "2017-11-09",
-								"x-ms-blob-type": "BlockBlob"
-							},
-							"body": {
-								"value": "@variables('SentimentAnalysis')",
-								"type": "Expression"
-							},
-							"authentication": {
-								"type": "MSI",
-								"resource": "https://storage.azure.com/"
-							}
-						}
-					},
-					{
-						"name": "Data Flow",
-						"type": "ExecuteDataFlow",
-						"dependsOn": [
-							{
-								"activity": "Writing To blob",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"policy": {
-							"timeout": "1.00:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"dataflow": {
-								"referenceName": "CustomerData",
-								"type": "DataFlowReference",
-								"parameters": {
-									"SpecCode": {
-										"value": "'@{pipeline().parameters.SpecCode}'",
-										"type": "Expression"
-									},
-									"Runtime": {
-										"value": "'@{variables('FileNameWithTimeStamp')}'",
-										"type": "Expression"
-									},
-									"FileName": {
-										"value": "'@{pipeline().parameters.FileName}'",
-										"type": "Expression"
-									}
-								},
-								"datasetParameters": {
-									"CustomerFeedback": {
-										"SpecCode": {
-											"value": "@pipeline().parameters.SpecCode",
-											"type": "Expression"
-										}
-									},
-									"SentimentalAnalysis": {
-										"SpecCode": {
-											"value": "@pipeline().parameters.SpecCode",
-											"type": "Expression"
-										}
-									},
-									"sinkBLOB": {
-										"SpecCode": {
-											"value": "@pipeline().parameters.SpecCode",
-											"type": "Expression"
-										}
-									},
-									"SinkSQLTable": {
-										"TableName": "feedbackreport",
-										"SchemaName": "dbo"
-									}
-								}
-							},
-							"staging": {},
-							"compute": {
-								"coreCount": 8,
-								"computeType": "General"
-							},
-							"traceLevel": "Fine"
-						}
-					},
-					{
-						"name": "Set rundate",
-						"type": "SetVariable",
-						"dependsOn": [],
-						"userProperties": [],
-						"typeProperties": {
-							"variableName": "FileNameWithTimeStamp",
-							"value": {
-								"value": "@substring(replace(replace(replace(pipeline().TriggerTime,'-',''),':',''),'T','_'),0,15)",
-								"type": "Expression"
-							}
-						}
-					},
-					{
-						"name": "Failure - Send Email",
-						"type": "WebActivity",
-						"dependsOn": [
-							{
-								"activity": "Data Flow",
-								"dependencyConditions": [
-									"Failed"
-								]
-							}
-						],
-						"policy": {
-							"timeout": "7.00:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"url": "https://prod-14.uksouth.logic.azure.com:443/workflows/69a319b95102497ebb0bb28d4abced10/triggers/manual/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=nstnBZt5LcGuqmsGCFYLcj5SG05j6NHnvOEy7T3MKjk",
-							"method": "POST",
-							"headers": {},
-							"body": {
-								"value": "{\n\"title\": \"PIPELINE RUN FINISHED\",\n\"dataFactoryName\" : \"@{pipeline().DataFactory}\",\n\"pipelineName\" : \"@{pipeline().Pipeline}\",\n\"pipelineRunId\": \"@{pipeline().RunId}\",\n\"message\":\"@{activity('Data Flow').output.error}\",\n\"time\" : \"@{pipeline().TriggerTime}\"\n}\n",
-								"type": "Expression"
-							}
-						}
-					},
-					{
-						"name": "Success - Send Email",
-						"type": "WebActivity",
-						"dependsOn": [
-							{
-								"activity": "Data Flow",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"policy": {
-							"timeout": "7.00:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"url": "https://prod-14.uksouth.logic.azure.com:443/workflows/69a319b95102497ebb0bb28d4abced10/triggers/manual/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=nstnBZt5LcGuqmsGCFYLcj5SG05j6NHnvOEy7T3MKjk",
-							"method": "POST",
-							"headers": {},
-							"body": {
-								"value": "{\n\"title\": \"PIPELINE RUN FINISHED\",\n\"dataFactoryName\" : \"@{pipeline().DataFactory}\",\n\"pipelineName\" : \"@{pipeline().Pipeline}\",\n\"pipelineRunId\": \"@{pipeline().RunId}\",\n\"message\":\"\",\n\"time\" : \"@{pipeline().TriggerTime}\"\n}\n",
-								"type": "Expression"
-							}
-						}
-					}
-				],
-				"policy": {
-					"elapsedTimeMetric": {},
-					"cancelAfter": {}
-				},
-				"parameters": {
-					"SpecCode": {
-						"type": "string",
-						"defaultValue": "feedback"
-					},
-					"FileName": {
-						"type": "string",
-						"defaultValue": "Customer Feedback"
-					}
-				},
-				"variables": {
-					"SentimentAnalysis": {
-						"type": "Array"
-					},
-					"FileNameWithTimeStamp": {
-						"type": "String"
-					}
-				},
-				"folder": {
-					"name": "SentimentAnalysis"
-				},
-				"annotations": []
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/dataflows/CustomerData')]"
 			]
 		}
 	]
