@@ -401,13 +401,9 @@
 						},
 						"userProperties": [],
 						"typeProperties": {
-							"functionName": " CreateManifest",
-							"method": "POST",
-							"headers": {},
-							"body": {
-								"value": "@json(concat('{\"name\":\"file-in\",\"values\":',variables('RowsArray')))\n",
-								"type": "Expression"
-							}
+							"functionName": " HelloFunction",
+							"method": "GET",
+							"headers": {}
 						},
 						"linkedServiceName": {
 							"referenceName": "LS_AF",
