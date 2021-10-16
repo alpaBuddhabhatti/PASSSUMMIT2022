@@ -11,18 +11,6 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'connectionString' of 'AzureBlobStorage1'"
 		},
-		"LS_AF_functionKey": {
-			"type": "secureString",
-			"metadata": "Secure string for 'functionKey' of 'LS_AF'"
-		},
-		"AzureFunction1_functionKey": {
-			"type": "secureString",
-			"metadata": "Secure string for 'functionKey' of 'AzureFunction1'"
-		},
-		"LS_AF_properties_typeProperties_functionAppUrl": {
-			"type": "string",
-			"defaultValue": "https://azdev-dps-demo-funapp.azurewebsites.net"
-		},
 		"LS_KV_properties_typeProperties_baseUrl": {
 			"type": "string",
 			"defaultValue": "https://AZDEV-KV-DGS2021.vault.azure.net/"
@@ -31,13 +19,13 @@
 			"type": "string",
 			"defaultValue": "https://dummy.restapiexample.com/api/v1/employees"
 		},
-		"AzureFunction1_properties_typeProperties_functionAppUrl": {
-			"type": "string",
-			"defaultValue": "https://azdev-dps-demo-funapp.azurewebsites.net"
-		},
 		"LS_ABLB_properties_typeProperties_connectionString_secretName": {
 			"type": "string",
 			"defaultValue": "ABLB-CONNECTION"
+		},
+		"LS_AF_properties_typeProperties_functionAppUrl": {
+			"type": "string",
+			"defaultValue": "https://azdev-dps-demo-funapp.azurewebsites.net"
 		},
 		"LS_ASQL_properties_typeProperties_connectionString_secretName": {
 			"type": "string",
@@ -102,24 +90,6 @@
 			"dependsOn": []
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/LS_AF')]",
-			"type": "Microsoft.DataFactory/factories/linkedServices",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"type": "AzureFunction",
-				"typeProperties": {
-					"functionAppUrl": "[parameters('LS_AF_properties_typeProperties_functionAppUrl')]",
-					"functionKey": {
-						"type": "SecureString",
-						"value": "[parameters('LS_AF_functionKey')]"
-					},
-					"authentication": "Anonymous"
-				}
-			},
-			"dependsOn": []
-		},
-		{
 			"name": "[concat(parameters('factoryName'), '/LS_KV')]",
 			"type": "Microsoft.DataFactory/factories/linkedServices",
 			"apiVersion": "2018-06-01",
@@ -143,24 +113,6 @@
 					"url": "[parameters('LS_REST_properties_typeProperties_url')]",
 					"enableServerCertificateValidation": true,
 					"authenticationType": "Anonymous"
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/AzureFunction1')]",
-			"type": "Microsoft.DataFactory/factories/linkedServices",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"type": "AzureFunction",
-				"typeProperties": {
-					"functionAppUrl": "[parameters('AzureFunction1_properties_typeProperties_functionAppUrl')]",
-					"functionKey": {
-						"type": "SecureString",
-						"value": "[parameters('AzureFunction1_functionKey')]"
-					},
-					"authentication": "Anonymous"
 				}
 			},
 			"dependsOn": []
@@ -260,6 +212,30 @@
 						},
 						"secretName": "[parameters('LS_ABLB_properties_typeProperties_connectionString_secretName')]"
 					}
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/LS_KV')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/LS_AF')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureFunction",
+				"typeProperties": {
+					"functionAppUrl": "[parameters('LS_AF_properties_typeProperties_functionAppUrl')]",
+					"functionKey": {
+						"type": "AzureKeyVaultSecret",
+						"store": {
+							"referenceName": "LS_KV",
+							"type": "LinkedServiceReference"
+						},
+						"secretName": "AF-KEY"
+					},
+					"authentication": "Anonymous"
 				}
 			},
 			"dependsOn": [
@@ -1064,6 +1040,29 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/linkedServices/LS_ABLB')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DS_ASQL')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "LS_ASQL",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "DEMO 1"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [],
+				"typeProperties": {
+					"table": "EMP"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/LS_ASQL')]"
 			]
 		}
 	]

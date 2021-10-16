@@ -11,14 +11,6 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'connectionString' of 'AzureBlobStorage1'"
 		},
-		"LS_AF_functionKey": {
-			"type": "secureString",
-			"metadata": "Secure string for 'functionKey' of 'LS_AF'"
-		},
-		"AzureFunction1_functionKey": {
-			"type": "secureString",
-			"metadata": "Secure string for 'functionKey' of 'AzureFunction1'"
-		},
 		"LS_ABLB_properties_typeProperties_connectionString_secretName": {
 			"type": "string",
 			"defaultValue": "ABLB-CONNECTION"
@@ -38,10 +30,6 @@
 		"LS_REST_properties_typeProperties_url": {
 			"type": "string",
 			"defaultValue": "https://dummy.restapiexample.com/api/v1/employees"
-		},
-		"AzureFunction1_properties_typeProperties_functionAppUrl": {
-			"type": "string",
-			"defaultValue": "https://azdev-dps-demo-funapp.azurewebsites.net"
 		}
 	},
 	"variables": {
@@ -578,11 +566,11 @@
 						"userProperties": [
 							{
 								"name": "Source",
-								"value": "file-in//events.csv"
+								"value": "@{concat(pipeline().parameters.SpecCode,'-in')}//@{pipeline().parameters.FileName}"
 							},
 							{
 								"name": "Destination",
-								"value": ".@{split(item().name,'.csv')}"
+								"value": "@{'dbo'}.@{trim(replace(pipeline().parameters.FileName,'.csv',''))}"
 							}
 						],
 						"typeProperties": {
@@ -671,7 +659,7 @@
 							"method": "POST",
 							"headers": {},
 							"body": {
-								"value": "{\n\"title\": \"PIPELINE RUN FINISHED\",\n\"dataFactoryName\" : \"@{pipeline().DataFactory}\",\n\"pipelineName\" : \"@{pipeline().Pipeline}\",\n\"pipelineRunId\": \"@{pipeline().RunId}\",\n\"message\":\"@{activity('Copy data file').output.error}\",\n\"time\" : \"@{pipeline().TriggerTime}\",\n\"color\":\"Red\"\n}\n",
+								"value": "{\n\"title\": \"PIPELINE RUN FINISHED\",\n\"dataFactoryName\" : \"@{pipeline().DataFactory}\",\n\"pipelineName\" : \"@{pipeline().Pipeline}\",\n\"pipelineRunId\": \"@{pipeline().RunId}\",\n\"message\":\"@{activity('Copy data file').output.error}.message\",\n\"time\" : \"@{pipeline().TriggerTime}\",\n\"color\":\"Red\"\n}\n",
 								"type": "Expression"
 							}
 						}
@@ -719,7 +707,7 @@
 						"userProperties": [],
 						"typeProperties": {
 							"items": {
-								"value": "@activity('Lookup').output",
+								"value": "@activity('Lookup').output.value",
 								"type": "Expression"
 							},
 							"activities": [
@@ -764,7 +752,7 @@
 													"type": "Expression"
 												},
 												"FileName": {
-													"value": "@pipeline().parameters.FileName",
+													"value": "@item().FileName",
 													"type": "Expression"
 												}
 											}
@@ -2761,7 +2749,7 @@
 					"location": {
 						"type": "AzureBlobStorageLocation",
 						"container": {
-							"value": "@concat(dataset().SpecCode,'-staging')",
+							"value": "input",
 							"type": "Expression"
 						}
 					}
@@ -2834,13 +2822,19 @@
 				"typeProperties": {
 					"functionAppUrl": "[parameters('LS_AF_properties_typeProperties_functionAppUrl')]",
 					"functionKey": {
-						"type": "SecureString",
-						"value": "[parameters('LS_AF_functionKey')]"
+						"type": "AzureKeyVaultSecret",
+						"store": {
+							"referenceName": "LS_KV",
+							"type": "LinkedServiceReference"
+						},
+						"secretName": "AF-KEY"
 					},
 					"authentication": "Anonymous"
 				}
 			},
-			"dependsOn": []
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/LS_KV')]"
+			]
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/LS_ASQL')]",
@@ -3024,24 +3018,6 @@
 				"[concat(variables('factoryId'), '/datasets/DS_ABLB')]",
 				"[concat(variables('factoryId'), '/datasets/DS_ASQL')]"
 			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/AzureFunction1')]",
-			"type": "Microsoft.DataFactory/factories/linkedServices",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"type": "AzureFunction",
-				"typeProperties": {
-					"functionAppUrl": "[parameters('AzureFunction1_properties_typeProperties_functionAppUrl')]",
-					"functionKey": {
-						"type": "SecureString",
-						"value": "[parameters('AzureFunction1_functionKey')]"
-					},
-					"authentication": "Anonymous"
-				}
-			},
-			"dependsOn": []
 		}
 	]
 }

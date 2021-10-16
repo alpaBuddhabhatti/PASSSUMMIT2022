@@ -11,14 +11,6 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'connectionString' of 'AzureBlobStorage1'"
 		},
-		"LS_AF_functionKey": {
-			"type": "secureString",
-			"metadata": "Secure string for 'functionKey' of 'LS_AF'"
-		},
-		"AzureFunction1_functionKey": {
-			"type": "secureString",
-			"metadata": "Secure string for 'functionKey' of 'AzureFunction1'"
-		},
 		"LS_ABLB_properties_typeProperties_connectionString_secretName": {
 			"type": "string",
 			"defaultValue": "ABLB-CONNECTION"
@@ -38,10 +30,6 @@
 		"LS_REST_properties_typeProperties_url": {
 			"type": "string",
 			"defaultValue": "https://dummy.restapiexample.com/api/v1/employees"
-		},
-		"AzureFunction1_properties_typeProperties_functionAppUrl": {
-			"type": "string",
-			"defaultValue": "https://azdev-dps-demo-funapp.azurewebsites.net"
 		},
 		"containerUri": {
 			"type": "string",
@@ -73,26 +61,17 @@
 					"AzureBlobStorage1_connectionString": {
 						"value": "[parameters('AzureBlobStorage1_connectionString')]"
 					},
-					"LS_AF_functionKey": {
-						"value": "[parameters('LS_AF_functionKey')]"
-					},
-					"AzureFunction1_functionKey": {
-						"value": "[parameters('AzureFunction1_functionKey')]"
-					},
-					"LS_AF_properties_typeProperties_functionAppUrl": {
-						"value": "[parameters('LS_AF_properties_typeProperties_functionAppUrl')]"
-					},
 					"LS_KV_properties_typeProperties_baseUrl": {
 						"value": "[parameters('LS_KV_properties_typeProperties_baseUrl')]"
 					},
 					"LS_REST_properties_typeProperties_url": {
 						"value": "[parameters('LS_REST_properties_typeProperties_url')]"
 					},
-					"AzureFunction1_properties_typeProperties_functionAppUrl": {
-						"value": "[parameters('AzureFunction1_properties_typeProperties_functionAppUrl')]"
-					},
 					"LS_ABLB_properties_typeProperties_connectionString_secretName": {
 						"value": "[parameters('LS_ABLB_properties_typeProperties_connectionString_secretName')]"
+					},
+					"LS_AF_properties_typeProperties_functionAppUrl": {
+						"value": "[parameters('LS_AF_properties_typeProperties_functionAppUrl')]"
 					},
 					"LS_ASQL_properties_typeProperties_connectionString_secretName": {
 						"value": "[parameters('LS_ASQL_properties_typeProperties_connectionString_secretName')]"
@@ -119,26 +98,6 @@
 			},
 			"dependsOn": [
 				"[resourceId('Microsoft.Resources/deployments', 'AZDEV-DF-DGS2021_ArmTemplate_0')]"
-			]
-		},
-		{
-			"name": "AZDEV-DF-DGS2021_ArmTemplate_2",
-			"type": "Microsoft.Resources/deployments",
-			"apiVersion": "2018-02-01",
-			"properties": {
-				"mode": "incremental",
-				"templateLink": {
-					"uri": "[concat(parameters('containerUri'), '/ArmTemplate_2.json', parameters('containerSasToken'))]",
-					"contentVersion": "1.0.0.0"
-				},
-				"parameters": {
-					"factoryName": {
-						"value": "[parameters('factoryName')]"
-					}
-				}
-			},
-			"dependsOn": [
-				"[resourceId('Microsoft.Resources/deployments', 'AZDEV-DF-DGS2021_ArmTemplate_1')]"
 			]
 		}
 	]

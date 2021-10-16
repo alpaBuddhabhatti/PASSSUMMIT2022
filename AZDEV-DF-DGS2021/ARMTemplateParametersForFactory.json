@@ -8,12 +8,6 @@
 		"AzureBlobStorage1_connectionString": {
 			"value": ""
 		},
-		"LS_AF_functionKey": {
-			"value": ""
-		},
-		"AzureFunction1_functionKey": {
-			"value": ""
-		},
 		"LS_ABLB_properties_typeProperties_connectionString_secretName": {
 			"value": "ABLB-CONNECTION"
 		},
@@ -28,9 +22,6 @@
 		},
 		"LS_REST_properties_typeProperties_url": {
 			"value": "https://dummy.restapiexample.com/api/v1/employees"
-		},
-		"AzureFunction1_properties_typeProperties_functionAppUrl": {
-			"value": "https://azdev-dps-demo-funapp.azurewebsites.net"
 		}
 	}
 }
