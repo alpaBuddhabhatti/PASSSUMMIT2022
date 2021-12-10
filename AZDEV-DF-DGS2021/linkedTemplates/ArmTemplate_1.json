@@ -13,44 +13,6 @@
 	},
 	"resources": [
 		{
-			"name": "[concat(parameters('factoryName'), '/DS_ASQL_DF')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "LS_ASQL",
-					"type": "LinkedServiceReference"
-				},
-				"parameters": {
-					"TableName": {
-						"type": "string",
-						"defaultValue": "feedbackreport"
-					},
-					"SchemaName": {
-						"type": "string",
-						"defaultValue": "dbo"
-					}
-				},
-				"folder": {
-					"name": "SentimentAnalysis"
-				},
-				"annotations": [],
-				"type": "AzureSqlTable",
-				"schema": [],
-				"typeProperties": {
-					"schema": {
-						"value": "@dataset().SchemaName",
-						"type": "Expression"
-					},
-					"table": {
-						"value": "@dataset().TableName",
-						"type": "Expression"
-					}
-				}
-			},
-			"dependsOn": []
-		},
-		{
 			"name": "[concat(parameters('factoryName'), '/DS_ASQL_Events')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -1421,12 +1383,10 @@
 							"name": "GroupBySentiment"
 						}
 					],
-					"script": "parameters{\n\tSpecCode as string ('feedback'),\n\tRuntime as string ('123456_123456'),\n\tFileName as string ('test.csv')\n}\nsource(output(\n\t\tCustomerID as string,\n\t\t{Product } as string,\n\t\tFeedback as string\n\t),\n\tallowSchemaDrift: false,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false,\n\twildcardPaths:['*.csv']) ~> CustomerFeedback\nsource(output(\n\t\tid as string,\n\t\tsentiment as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false,\n\tdocumentForm: 'documentPerLine',\n\tpreferredIntegralType: 'integer',\n\twildcardPaths:['*.json']) ~> SentimentalAnalysis\nCustomerFeedback, SentimentalAnalysis join(CustomerID == id,\n\tjoinType:'inner',\n\tbroadcast: 'auto')~> Join\nJoin aggregate(groupBy(sentiment),\n\ttotal = count(sentiment)) ~> GroupBySentiment\nGroupBySentiment sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tpartitionFileNames:[(concat($FileName,'_', $Runtime,'.csv'))],\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true,\n\tsaveOrder: 1,\n\tpartitionBy('hash', 1)) ~> sinkBLOB\nJoin sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tdeletable:false,\n\tinsertable:true,\n\tupdateable:false,\n\tupsertable:false,\n\tformat: 'table',\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true,\n\terrorHandlingOption: 'stopOnFirstError') ~> SinkSQLTable"
+					"script": "parameters{\n\tSpecCode as string ('feedback'),\n\tRuntime as string ('123456_123456'),\n\tFileName as string ('test.csv')\n}\nsource(output(\n\t\tCustomerID as string,\n\t\t{Product } as string,\n\t\tFeedback as string\n\t),\n\tallowSchemaDrift: false,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false,\n\twildcardPaths:['*.csv']) ~> CustomerFeedback\nsource(output(\n\t\tid as string,\n\t\tsentiment as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false,\n\tdocumentForm: 'documentPerLine',\n\tpreferredIntegralType: 'integer',\n\twildcardPaths:['*.json']) ~> SentimentalAnalysis\nCustomerFeedback, SentimentalAnalysis join(CustomerID == id,\n\tjoinType:'inner',\n\tbroadcast: 'auto')~> Join\nJoin aggregate(groupBy(sentiment),\n\ttotal = count(sentiment)) ~> GroupBySentiment\nGroupBySentiment sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tpartitionFileNames:[(concat($FileName,'_', $Runtime,'.csv'))],\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true,\n\tsaveOrder: 1,\n\tpartitionBy('hash', 1)) ~> sinkBLOB\nJoin sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tdeletable:false,\n\tinsertable:true,\n\tupdateable:false,\n\tupsertable:false,\n\tformat: 'table',\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true,\n\terrorHandlingOption: 'stopOnFirstError',\n\tmapColumn(\n\t\tCustomerID,\n\t\t{Product },\n\t\tFeedback,\n\t\tsentiment\n\t)) ~> SinkSQLTable"
 				}
 			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/DS_ASQL_DF')]"
-			]
+			"dependsOn": []
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/DF_EVENT')]",
