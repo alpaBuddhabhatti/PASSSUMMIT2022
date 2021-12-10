@@ -7,10 +7,6 @@
 			"metadata": "Data Factory name",
 			"defaultValue": "AZDEV-DF-DGS2021"
 		},
-		"AzureBlobStorage1_connectionString": {
-			"type": "secureString",
-			"metadata": "Secure string for 'connectionString' of 'AzureBlobStorage1'"
-		},
 		"LS_ABLB_properties_typeProperties_connectionString_secretName": {
 			"type": "string",
 			"defaultValue": "ABLB-CONNECTION"
@@ -57,9 +53,6 @@
 				"parameters": {
 					"factoryName": {
 						"value": "[parameters('factoryName')]"
-					},
-					"AzureBlobStorage1_connectionString": {
-						"value": "[parameters('AzureBlobStorage1_connectionString')]"
 					},
 					"LS_KV_properties_typeProperties_baseUrl": {
 						"value": "[parameters('LS_KV_properties_typeProperties_baseUrl')]"

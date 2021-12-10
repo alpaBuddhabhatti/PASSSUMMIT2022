@@ -7,10 +7,6 @@
 			"metadata": "Data Factory name",
 			"defaultValue": "AZDEV-DF-DGS2021"
 		},
-		"AzureBlobStorage1_connectionString": {
-			"type": "secureString",
-			"metadata": "Secure string for 'connectionString' of 'AzureBlobStorage1'"
-		},
 		"LS_ABLB_properties_typeProperties_connectionString_secretName": {
 			"type": "string",
 			"defaultValue": "ABLB-CONNECTION"
@@ -1562,7 +1558,7 @@
 							"method": "POST",
 							"headers": {},
 							"body": {
-								"value": "{\n\"title\": \"PIPELINE RUN FINISHED\",\n\"dataFactoryName\" : \"@{pipeline().DataFactory}\",\n\"pipelineName\" : \"@{pipeline().Pipeline}\",\n\"pipelineRunId\": \"@{pipeline().RunId}\",\n\"message\":\"\",\n\"time\" : \"@{pipeline().TriggerTime}\"\n}\n",
+								"value": "{\n\"title\": \"PIPELINE RUN FINISHED\",\n\"dataFactoryName\" : \"@{pipeline().DataFactory}\",\n\"pipelineName\" : \"@{pipeline().Pipeline}\",\n\"pipelineRunId\": \"@{pipeline().RunId}\",\n\"message\":\"\",\n\"time\" : \"@{pipeline().TriggerTime}\",\n\"color\": \"Green\"\n}\n",
 								"type": "Expression"
 							}
 						}
@@ -2736,19 +2732,6 @@
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/linkedServices/LS_REST')]"
 			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/AzureBlobStorage1')]",
-			"type": "Microsoft.DataFactory/factories/linkedServices",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"type": "AzureBlobStorage",
-				"typeProperties": {
-					"connectionString": "[parameters('AzureBlobStorage1_connectionString')]"
-				}
-			},
-			"dependsOn": []
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/LS_ABLB')]",

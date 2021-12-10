@@ -5,9 +5,6 @@
 		"factoryName": {
 			"value": "AZDEV-DF-DGS2021"
 		},
-		"AzureBlobStorage1_connectionString": {
-			"value": ""
-		},
 		"LS_ABLB_properties_typeProperties_connectionString_secretName": {
 			"value": "ABLB-CONNECTION"
 		},

@@ -13,28 +13,6 @@
 	},
 	"resources": [
 		{
-			"name": "[concat(parameters('factoryName'), '/DS_ASQL_Events')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "LS_ASQL",
-					"type": "LinkedServiceReference"
-				},
-				"folder": {
-					"name": "DEMO 2"
-				},
-				"annotations": [],
-				"type": "AzureSqlTable",
-				"schema": [],
-				"typeProperties": {
-					"schema": "dbo",
-					"table": "Events"
-				}
-			},
-			"dependsOn": []
-		},
-		{
 			"name": "[concat(parameters('factoryName'), '/DS_ASQL_GINFO')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -1175,9 +1153,7 @@
 				"annotations": [],
 				"lastPublishTime": "2021-08-02T22:30:19Z"
 			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/DS_ASQL_Events')]"
-			]
+			"dependsOn": []
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/PL_MOVE_EVENTS_CUSTOMERFEEDBACK')]",
@@ -1852,7 +1828,7 @@
 							"method": "POST",
 							"headers": {},
 							"body": {
-								"value": "{\n\"title\": \"PIPELINE RUN FINISHED\",\n\"dataFactoryName\" : \"@{pipeline().DataFactory}\",\n\"pipelineName\" : \"@{pipeline().Pipeline}\",\n\"pipelineRunId\": \"@{pipeline().RunId}\",\n\"message\":\"\",\n\"time\" : \"@{pipeline().TriggerTime}\"\n}\n",
+								"value": "{\n\"title\": \"PIPELINE RUN FINISHED\",\n\"dataFactoryName\" : \"@{pipeline().DataFactory}\",\n\"pipelineName\" : \"@{pipeline().Pipeline}\",\n\"pipelineRunId\": \"@{pipeline().RunId}\",\n\"message\":\"\",\n\"time\" : \"@{pipeline().TriggerTime}\",\n\"color\": \"Green\"\n}\n",
 								"type": "Expression"
 							}
 						}
