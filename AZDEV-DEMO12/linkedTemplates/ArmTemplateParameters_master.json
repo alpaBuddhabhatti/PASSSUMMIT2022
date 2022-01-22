@@ -1,0 +1,30 @@
+{
+	"$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"value": "AZDEV-DEMO12"
+		},
+		"LS_ABLB_properties_typeProperties_connectionString_secretName": {
+			"value": "ABLB-CONNECTION"
+		},
+		"LS_AF_properties_typeProperties_functionAppUrl": {
+			"value": "https://azdev-dps-demo-funapp.azurewebsites.net"
+		},
+		"LS_ASQL_properties_typeProperties_connectionString_secretName": {
+			"value": "ASQL-DB-CONNECTION"
+		},
+		"LS_KV_properties_typeProperties_baseUrl": {
+			"value": "https://DGS-KV.vault.azure.net/"
+		},
+		"LS_REST_properties_typeProperties_url": {
+			"value": "https://dummy.restapiexample.com/api/v1/employees"
+		},
+		"containerUri": {
+			"value": ""
+		},
+		"containerSasToken": {
+			"value": ""
+		}
+	}
+}
