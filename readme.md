@@ -18,6 +18,9 @@ Demo has used following Azure Resources:
 Here is solution Diagrams:
 ![image](https://user-images.githubusercontent.com/64379307/150657611-665355e6-8f31-43a5-94dc-ae9b3f179d3e.png)
 
+    Customer Feedback.csv - file has sample data.
+    .ppt file presentation.
+
 You can easily integrate Azure Congnitive Service for Langurage - Text Analytics with other Azure Services and other services Such as :
 
 
