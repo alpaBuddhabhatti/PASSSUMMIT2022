@@ -15,12 +15,8 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobFSLocation",
-				"folderPath": {
-					"value": "input",
-					"type": "Expression"
-				},
 				"fileSystem": {
-					"value": "@concat(dataset().SpecCode,'-staging')",
+					"value": "input",
 					"type": "Expression"
 				}
 			}
