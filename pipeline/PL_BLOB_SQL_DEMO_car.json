@@ -31,7 +31,7 @@
 						"type": "DatasetReference",
 						"parameters": {
 							"FileName": "cars.csv",
-							"SpecCode": {
+							"speccode": {
 								"value": "@pipeline().parameters.SpecCode",
 								"type": "Expression"
 							}
@@ -86,9 +86,9 @@
 					},
 					"sink": {
 						"type": "AzureSqlSink",
+						"writeBehavior": "insert",
 						"tableOption": "autoCreate",
-						"disableMetricsCollection": false,
-						"writeBehavior": "insert"
+						"disableMetricsCollection": false
 					},
 					"enableStaging": false,
 					"translator": {
@@ -109,7 +109,7 @@
 								"value": "@pipeline().parameters.FileName",
 								"type": "Expression"
 							},
-							"SpecCode": {
+							"speccode": {
 								"value": "@pipeline().parameters.SpecCode",
 								"type": "Expression"
 							}
