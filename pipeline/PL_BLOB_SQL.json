@@ -60,8 +60,8 @@
 								},
 								"sink": {
 									"type": "AzureSqlSink",
-									"disableMetricsCollection": false,
-									"writeBehavior": "insert"
+									"writeBehavior": "insert",
+									"disableMetricsCollection": false
 								},
 								"enableStaging": false,
 								"translator": {
@@ -82,7 +82,7 @@
 											"value": "@concat(item().name,'.csv')",
 											"type": "Expression"
 										},
-										"SpecCode": {
+										"speccode": {
 											"value": "@pipeline().parameters.SpecCode",
 											"type": "Expression"
 										}
@@ -155,7 +155,7 @@
 			}
 		},
 		"folder": {
-			"name": "DEMO 3"
+			"name": "All/DEMO 3"
 		},
 		"annotations": [],
 		"lastPublishTime": "2021-08-03T22:29:39Z"
