@@ -2,7 +2,7 @@
 	"name": "LS_ABLB_BINARY_STAGING",
 	"properties": {
 		"linkedServiceName": {
-			"referenceName": "LS_ADLS",
+			"referenceName": "LS_ABLB",
 			"type": "LinkedServiceReference"
 		},
 		"parameters": {
@@ -14,8 +14,8 @@
 		"type": "Binary",
 		"typeProperties": {
 			"location": {
-				"type": "AzureBlobFSLocation",
-				"fileSystem": {
+				"type": "AzureBlobStorageLocation",
+				"container": {
 					"value": "input",
 					"type": "Expression"
 				}
