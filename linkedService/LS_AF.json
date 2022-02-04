@@ -11,7 +11,7 @@
 					"referenceName": "LS_KV",
 					"type": "LinkedServiceReference"
 				},
-				"secretName": "AF-KEY"
+				"secretName": "FA-KEY"
 			},
 			"authentication": "Anonymous"
 		}
