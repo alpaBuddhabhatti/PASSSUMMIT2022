@@ -1,0 +1,81 @@
+{
+	"name": "MovieTransformation_All",
+	"properties": {
+		"activities": [
+			{
+				"name": "Data flow - Movie",
+				"type": "ExecuteDataFlow",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "1.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"dataflow": {
+						"referenceName": "TransformationDemo",
+						"type": "DataFlowReference",
+						"parameters": {
+							"FileName": {
+								"value": "'@{pipeline().parameters.FileName}'",
+								"type": "Expression"
+							},
+							"Speccode": {
+								"value": "'@{pipeline().parameters.Speccode}'",
+								"type": "Expression"
+							}
+						},
+						"datasetParameters": {
+							"MovieDB": {
+								"FileName": {
+									"value": "@pipeline().parameters.FileName",
+									"type": "Expression"
+								},
+								"Speccode": {
+									"value": "@pipeline().parameters.Speccode",
+									"type": "Expression"
+								}
+							},
+							"MoviesSink": {
+								"Speccode": {
+									"value": "@pipeline().parameters.Speccode",
+									"type": "Expression"
+								}
+							},
+							"AllData": {
+								"Speccode": {
+									"value": "@pipeline().parameters.Speccode",
+									"type": "Expression"
+								}
+							}
+						}
+					},
+					"compute": {
+						"coreCount": 8,
+						"computeType": "General"
+					},
+					"traceLevel": "Fine"
+				}
+			}
+		],
+		"parameters": {
+			"FileName": {
+				"type": "string",
+				"defaultValue": "moviesDB.csv"
+			},
+			"Speccode": {
+				"type": "string",
+				"defaultValue": "movie"
+			}
+		},
+		"folder": {
+			"name": "Transforming"
+		},
+		"annotations": [],
+		"lastPublishTime": "2021-09-06T22:54:46Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

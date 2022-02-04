@@ -1,9 +1,9 @@
 {
-	"name": "LS_ASQL",
+	"name": "LS_ABLB_IN",
 	"type": "Microsoft.DataFactory/factories/linkedservices",
 	"properties": {
 		"annotations": [],
-		"type": "AzureSqlDatabase",
+		"type": "AzureBlobStorage",
 		"typeProperties": {
 			"connectionString": {
 				"type": "AzureKeyVaultSecret",
@@ -11,7 +11,7 @@
 					"referenceName": "LS_KV",
 					"type": "LinkedServiceReference"
 				},
-				"secretName": "ASQL-CONN"
+				"secretName": "ABLB-CONN"
 			}
 		}
 	}

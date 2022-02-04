@@ -1,25 +1,25 @@
 {
-	"name": "DS_ABLB",
+	"name": "DS_ADLS_SINK",
 	"properties": {
 		"linkedServiceName": {
-			"referenceName": "LS_ABLB_IN",
+			"referenceName": "LS_ADLS",
 			"type": "LinkedServiceReference"
 		},
 		"parameters": {
-			"speccode": {
+			"Speccode": {
 				"type": "string"
 			}
 		},
 		"folder": {
-			"name": "Loading"
+			"name": "Transforming"
 		},
 		"annotations": [],
 		"type": "DelimitedText",
 		"typeProperties": {
 			"location": {
-				"type": "AzureBlobStorageLocation",
-				"container": {
-					"value": "@concat(dataset().speccode,'-in')",
+				"type": "AzureBlobFSLocation",
+				"fileSystem": {
+					"value": "@dataset().Speccode",
 					"type": "Expression"
 				}
 			},
@@ -28,17 +28,7 @@
 			"firstRowAsHeader": true,
 			"quoteChar": "\""
 		},
-		"schema": [
-			{
-				"type": "String"
-			},
-			{
-				"type": "String"
-			},
-			{
-				"type": "String"
-			}
-		]
+		"schema": []
 	},
 	"type": "Microsoft.DataFactory/factories/datasets"
 }

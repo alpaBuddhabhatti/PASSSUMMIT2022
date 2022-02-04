@@ -1,0 +1,148 @@
+{
+	"name": "ELT",
+	"properties": {
+		"activities": [
+			{
+				"name": "Execute Pipeline - Loading",
+				"type": "ExecutePipeline",
+				"dependsOn": [],
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "Loading",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true,
+					"parameters": {
+						"specdode": {
+							"value": "@pipeline().parameters.speccode",
+							"type": "Expression"
+						}
+					}
+				}
+			},
+			{
+				"name": "Execute Pipeline - Transforming",
+				"type": "ExecutePipeline",
+				"dependsOn": [
+					{
+						"activity": "Execute Pipeline - Loading",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "MovieTransformation",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true,
+					"parameters": {
+						"Speccode": {
+							"value": "@pipeline().parameters.speccode",
+							"type": "Expression"
+						}
+					}
+				}
+			},
+			{
+				"name": "Copy Data to ASQL",
+				"type": "Copy",
+				"dependsOn": [
+					{
+						"activity": "Execute Pipeline - Transforming",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "DelimitedTextSource",
+						"storeSettings": {
+							"type": "AzureBlobFSReadSettings",
+							"recursive": true,
+							"enablePartitionDiscovery": false
+						},
+						"formatSettings": {
+							"type": "DelimitedTextReadSettings"
+						}
+					},
+					"sink": {
+						"type": "AzureSqlSink",
+						"tableOption": "autoCreate",
+						"disableMetricsCollection": false
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"typeConversion": true,
+						"typeConversionSettings": {
+							"allowDataTruncation": true,
+							"treatBooleanAsNumber": false
+						}
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "DS_ADLS",
+						"type": "DatasetReference",
+						"parameters": {
+							"Speccode": {
+								"value": "@pipeline().parameters.speccode",
+								"type": "Expression"
+							},
+							"FileName": {
+								"value": "@pipeline().parameters.FileName",
+								"type": "Expression"
+							}
+						}
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "DS_ASQL",
+						"type": "DatasetReference",
+						"parameters": {
+							"TableName": {
+								"value": "@replace(pipeline().parameters.FileName,'.csv','')",
+								"type": "Expression"
+							},
+							"SchemaName": {
+								"value": "@pipeline().parameters.Schema",
+								"type": "Expression"
+							}
+						}
+					}
+				]
+			}
+		],
+		"parameters": {
+			"speccode": {
+				"type": "string",
+				"defaultValue": "movie"
+			},
+			"FileName": {
+				"type": "string",
+				"defaultValue": "RatedMovie.csv"
+			},
+			"Schema": {
+				"type": "string",
+				"defaultValue": "dbo"
+			}
+		},
+		"annotations": [],
+		"lastPublishTime": "2021-08-12T17:06:06Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

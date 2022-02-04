@@ -1,0 +1,9 @@
+{
+	"name": "AZDEV-DF-DEMO",
+	"location": "uksouth",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "1b95b7e5-a8b9-4a01-951b-260ca50a5537",
+		"tenantId": "b00367e2-193a-4f48-94de-7245d45c0947"
+	}
+}

@@ -1,32 +1,25 @@
 {
-	"name": "DS_ABLB_IN",
+	"name": "DS_ADLS_STAGING_All",
 	"properties": {
 		"linkedServiceName": {
-			"referenceName": "LS_ABLB_IN",
+			"referenceName": "LS_ADLS",
 			"type": "LinkedServiceReference"
 		},
 		"parameters": {
-			"FileName": {
-				"type": "string"
-			},
-			"speccode": {
+			"Speccode": {
 				"type": "string"
 			}
 		},
 		"folder": {
-			"name": "Loading"
+			"name": "General"
 		},
 		"annotations": [],
 		"type": "DelimitedText",
 		"typeProperties": {
 			"location": {
-				"type": "AzureBlobStorageLocation",
-				"fileName": {
-					"value": "@dataset().FileName",
-					"type": "Expression"
-				},
-				"container": {
-					"value": "@concat(dataset().speccode,'-in')",
+				"type": "AzureBlobFSLocation",
+				"fileSystem": {
+					"value": "@concat(dataset().Speccode,'-staging')",
 					"type": "Expression"
 				}
 			},
@@ -58,6 +51,10 @@
 			},
 			{
 				"name": "Rotton Tomato",
+				"type": "String"
+			},
+			{
+				"name": "Prop_6",
 				"type": "String"
 			},
 			{

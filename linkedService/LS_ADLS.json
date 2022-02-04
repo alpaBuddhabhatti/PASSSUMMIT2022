@@ -1,17 +1,18 @@
 {
-	"name": "LS_ASQL",
+	"name": "LS_ADLS",
 	"type": "Microsoft.DataFactory/factories/linkedservices",
 	"properties": {
 		"annotations": [],
-		"type": "AzureSqlDatabase",
+		"type": "AzureBlobFS",
 		"typeProperties": {
-			"connectionString": {
+			"url": "https://azdevlakestoragedemo.dfs.core.windows.net/",
+			"accountKey": {
 				"type": "AzureKeyVaultSecret",
 				"store": {
 					"referenceName": "LS_KV",
 					"type": "LinkedServiceReference"
 				},
-				"secretName": "ASQL-CONN"
+				"secretName": "ADL-CONN"
 			}
 		}
 	}
