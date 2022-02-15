@@ -1,5 +1,5 @@
 {
-	"name": "TransformationDemo_copy1",
+	"name": "TransformationDemoSQL",
 	"properties": {
 		"type": "MappingDataFlow",
 		"typeProperties": {
