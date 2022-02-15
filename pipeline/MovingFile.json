@@ -16,11 +16,11 @@
 				"userProperties": [
 					{
 						"name": "Source",
-						"value": "movie-in//@{item().name}"
+						"value": "@{concat(pipeline().parameters.spec_code,'-in')}//@{pipeline().parameters.file_name}"
 					},
 					{
 						"name": "Destination",
-						"value": "loading//"
+						"value": "@{concat(pipeline().parameters.spec_code,'-staging')}//@{pipeline().parameters.file_name}"
 					}
 				],
 				"typeProperties": {
