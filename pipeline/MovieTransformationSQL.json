@@ -41,7 +41,7 @@
 							},
 							"MoviesSink": {
 								"TableName": {
-									"value": "moviedb",
+									"value": "@trim(replace(pipeline().parameters.FileName,'.csv',''))",
 									"type": "Expression"
 								},
 								"SchemaName": {
