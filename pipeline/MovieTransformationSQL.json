@@ -18,6 +18,16 @@
 					"dataflow": {
 						"referenceName": "TransformationDemoSQL",
 						"type": "DataFlowReference",
+						"parameters": {
+							"FileName": {
+								"value": "'@{pipeline().parameters.FileName}'",
+								"type": "Expression"
+							},
+							"Speccode": {
+								"value": "'@{pipeline().parameters.Speccode}'",
+								"type": "Expression"
+							}
+						},
 						"datasetParameters": {
 							"MovieDB": {
 								"FileName": {
