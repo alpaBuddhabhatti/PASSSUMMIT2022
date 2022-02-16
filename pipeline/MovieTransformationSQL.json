@@ -16,16 +16,18 @@
 				"userProperties": [],
 				"typeProperties": {
 					"dataflow": {
-						"referenceName": "dataflow1",
+						"referenceName": "TransformationDemoSQL",
 						"type": "DataFlowReference",
 						"datasetParameters": {
-							"source1": {
-								"FileName": "moviesDB.csv",
-								"Speccode": "movie"
-							},
-							"sink1": {
-								"TableName": "feedbackreport",
-								"SchemaName": "dbo"
+							"MovieDB": {
+								"FileName": {
+									"value": "@pipeline().parameters.FileName",
+									"type": "Expression"
+								},
+								"Speccode": {
+									"value": "@pipeline().parameters.Speccode",
+									"type": "Expression"
+								}
 							}
 						}
 					},
