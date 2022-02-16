@@ -16,40 +16,16 @@
 				"userProperties": [],
 				"typeProperties": {
 					"dataflow": {
-						"referenceName": "TransformationDemo",
+						"referenceName": "dataflow1",
 						"type": "DataFlowReference",
-						"parameters": {
-							"FileName": {
-								"value": "'@{pipeline().parameters.FileName}'",
-								"type": "Expression"
-							},
-							"Speccode": {
-								"value": "'@{pipeline().parameters.Speccode}'",
-								"type": "Expression"
-							}
-						},
 						"datasetParameters": {
-							"MovieDB": {
-								"FileName": {
-									"value": "@pipeline().parameters.FileName",
-									"type": "Expression"
-								},
-								"Speccode": {
-									"value": "@pipeline().parameters.Speccode",
-									"type": "Expression"
-								}
+							"source1": {
+								"FileName": "moviesDB.csv",
+								"Speccode": "movie"
 							},
-							"MoviesSink": {
-								"Speccode": {
-									"value": "@pipeline().parameters.Speccode",
-									"type": "Expression"
-								}
-							},
-							"AllData": {
-								"Speccode": {
-									"value": "@pipeline().parameters.Speccode",
-									"type": "Expression"
-								}
+							"sink1": {
+								"TableName": "feedbackreport",
+								"SchemaName": "dbo"
 							}
 						}
 					},
