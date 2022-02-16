@@ -28,6 +28,16 @@
 									"value": "@pipeline().parameters.Speccode",
 									"type": "Expression"
 								}
+							},
+							"MoviesSink": {
+								"TableName": {
+									"value": "moviedb",
+									"type": "Expression"
+								},
+								"SchemaName": {
+									"value": "dbo",
+									"type": "Expression"
+								}
 							}
 						}
 					},
