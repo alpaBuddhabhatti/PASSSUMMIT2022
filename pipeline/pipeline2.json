@@ -15,28 +15,6 @@
 				},
 				"userProperties": [],
 				"typeProperties": {
-					"dataflow": {
-						"referenceName": "dataflow1_copy1",
-						"type": "DataFlowReference",
-						"datasetParameters": {
-							"source1": {
-								"FileName": {
-									"value": "moviesDB.csv",
-									"type": "Expression"
-								},
-								"Speccode": {
-									"value": "movie",
-									"type": "Expression"
-								}
-							},
-							"sink1": {
-								"Speccode": {
-									"value": "movie",
-									"type": "Expression"
-								}
-							}
-						}
-					},
 					"compute": {
 						"coreCount": 8,
 						"computeType": "General"

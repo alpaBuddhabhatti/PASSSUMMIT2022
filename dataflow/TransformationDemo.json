@@ -1,6 +1,9 @@
 {
 	"name": "TransformationDemo",
 	"properties": {
+		"folder": {
+			"name": "All"
+		},
 		"type": "MappingDataFlow",
 		"typeProperties": {
 			"sources": [

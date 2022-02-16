@@ -2,7 +2,7 @@
 	"name": "DF_EVENT",
 	"properties": {
 		"folder": {
-			"name": "DEMO 2"
+			"name": "All/DEMO 2"
 		},
 		"type": "MappingDataFlow",
 		"typeProperties": {
