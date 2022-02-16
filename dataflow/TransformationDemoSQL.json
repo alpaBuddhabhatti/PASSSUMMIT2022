@@ -1,6 +1,9 @@
 {
 	"name": "TransformationDemoSQL",
 	"properties": {
+		"folder": {
+			"name": "DEMO"
+		},
 		"type": "MappingDataFlow",
 		"typeProperties": {
 			"sources": [
