@@ -92,10 +92,12 @@
 		],
 		"parameters": {
 			"file_name": {
-				"type": "string"
+				"type": "string",
+				"defaultValue": "moviesDB.csv"
 			},
 			"spec_code": {
-				"type": "string"
+				"type": "string",
+				"defaultValue": "movie"
 			}
 		},
 		"folder": {
