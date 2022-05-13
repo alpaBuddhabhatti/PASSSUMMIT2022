@@ -1,0 +1,9 @@
+{
+	"name": "AZDEV-ADF-DEMO",
+	"location": "eastus",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "724f3ea6-20e4-4914-a8e5-7435e373f7ab",
+		"tenantId": "c10d9100-7f58-4e3c-af7d-0cc0317096ea"
+	}
+}
