@@ -215,7 +215,10 @@
 				},
 				"userProperties": [],
 				"typeProperties": {
-					"url": "https://prod-24.northcentralus.logic.azure.com:443/workflows/e563cd6e054947a0bba76400b20e9983/triggers/manual/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=20ZmY-leW6Y0zRTq1fDav_RC2Pf7m9KDJDG6-EIc-Kw",
+					"url": {
+						"value": "https://prod-16.eastus.logic.azure.com:443/workflows/171e15027df64e98ae06454274e07596/triggers/manual/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=38bgZZEJstHLzhg7cUXPh3HuiQi6i12BVRBOhuEd6tM",
+						"type": "Expression"
+					},
 					"method": "POST",
 					"body": {
 						"value": "{\n\"title\": \"PIPELINE RUN FINISHED\",\n\"dataFactoryName\" : \"@{pipeline().DataFactory}\",\n\"pipelineName\" : \"@{pipeline().Pipeline}\",\n\"pipelineRunId\": \"@{pipeline().RunId}\",\n\"message\":\"@{activity('Create Manifest').error.message}\",\n\"time\" : \"@{pipeline().TriggerTime}\",\n\"color\":\"Red\"\n}\n",
@@ -243,7 +246,10 @@
 				},
 				"userProperties": [],
 				"typeProperties": {
-					"url": "https://prod-24.northcentralus.logic.azure.com:443/workflows/e563cd6e054947a0bba76400b20e9983/triggers/manual/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=20ZmY-leW6Y0zRTq1fDav_RC2Pf7m9KDJDG6-EIc-Kw",
+					"url": {
+						"value": "https://prod-16.eastus.logic.azure.com:443/workflows/171e15027df64e98ae06454274e07596/triggers/manual/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=38bgZZEJstHLzhg7cUXPh3HuiQi6i12BVRBOhuEd6tM",
+						"type": "Expression"
+					},
 					"method": "POST",
 					"body": {
 						"value": "{\n\"title\": \"PIPELINE RUN FINISHED\",\n\"dataFactoryName\" : \"@{pipeline().DataFactory}\",\n\"pipelineName\" : \"@{pipeline().Pipeline}\",\n\"pipelineRunId\": \"@{pipeline().RunId}\",\n\"message\":\"\",\n\"time\" : \"@{pipeline().TriggerTime}\",\n\"color\":\"Green\"\n}\n",
