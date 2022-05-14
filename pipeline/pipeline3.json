@@ -4,6 +4,7 @@
 		"activities": [
 			{
 				"name": "Create Manifest",
+				"description": "test",
 				"type": "AzureFunctionActivity",
 				"dependsOn": [],
 				"policy": {
