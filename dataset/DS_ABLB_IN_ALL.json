@@ -10,9 +10,6 @@
 				"type": "string"
 			}
 		},
-		"folder": {
-			"name": "DEMO 3"
-		},
 		"annotations": [],
 		"type": "DelimitedText",
 		"typeProperties": {

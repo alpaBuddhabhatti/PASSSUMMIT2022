@@ -14,9 +14,6 @@
 				"defaultValue": "dbo"
 			}
 		},
-		"folder": {
-			"name": "DEMO 3"
-		},
 		"annotations": [],
 		"type": "AzureSqlTable",
 		"schema": [],

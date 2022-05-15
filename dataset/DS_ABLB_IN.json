@@ -13,9 +13,6 @@
 				"type": "string"
 			}
 		},
-		"folder": {
-			"name": "Loading"
-		},
 		"annotations": [],
 		"type": "DelimitedText",
 		"typeProperties": {
