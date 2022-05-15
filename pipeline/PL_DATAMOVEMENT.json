@@ -28,7 +28,9 @@
 							"type": "AzureBlobStorageWriteSettings"
 						},
 						"formatSettings": {
-							"type": "JsonWriteSettings"
+							"type": "DelimitedTextWriteSettings",
+							"quoteAllText": true,
+							"fileExtension": ".txt"
 						}
 					},
 					"enableStaging": false
@@ -78,6 +80,11 @@
 				}
 			}
 		],
+		"parameters": {
+			"speccode": {
+				"type": "string"
+			}
+		},
 		"folder": {
 			"name": "DEMO/All/DEMO 1"
 		},
