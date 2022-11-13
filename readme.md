@@ -12,7 +12,7 @@ For this Demo session, First you need to create Main Azure Resources such as:
  Also Add secret to Key Vault for Azure SQL Database(Connection Key), Azure Storage Account(Access Key) and Azure Functions(Function Key)
  Also Make sure Data Factory has contributon access in Azure Storage Account.
  Finally, make sure you have Container in Azure Storage Account and it has files.
- There are following containers needed.You can find files in Data folder from here
+ There are following containers needed.You can find files https://github.com/alpaBuddhabhatti/PASSSUMMIT2022/edit/ADF_AF_ALP/
  1. file-in (having input file such as *.jpg & *.csv)
  2. input container (Having .Jpg files)
  3. output container (having resized jpg files)
