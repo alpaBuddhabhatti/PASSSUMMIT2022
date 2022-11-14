@@ -1,4 +1,4 @@
-For this Demo session, First you need to create Main Azure Resources such as: 
+For Demos, First you need to create Main Azure Resources such as: 
                                                                 1. Azure Data Factory
                                                                 2. Azure Functions
                                                                 3. Azure Logic Apps
