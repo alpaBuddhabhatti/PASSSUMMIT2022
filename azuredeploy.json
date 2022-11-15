@@ -1,0 +1,123 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "workflows_name": {
+      "defaultValue": "AZDEV-LA-SE",
+      "type": "String"
+    },
+    "connections_gmail_externalid": {
+      "defaultValue": "/subscriptions/01debfb8-acc7-4607-855c-56bb0422e8d7/resourceGroups/DGS2021/providers/Microsoft.Web/connections/gmail",
+      "type": "String"
+    }
+  },
+  "variables": {},
+  "resources": [
+    {
+      "type": "Microsoft.Logic/workflows",
+      "apiVersion": "2017-07-01",
+      "name": "[parameters('workflows_name')]",
+      "location": "uksouth",
+      "properties": {
+        "state": "Enabled",
+        "definition": {
+          "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+          "contentVersion": "1.0.0.0",
+          "parameters": {
+            "$connections": {
+              "defaultValue": {},
+              "type": "Object"
+            }
+          },
+          "triggers": {
+            "manual": {
+              "type": "Request",
+              "kind": "Http",
+              "inputs": {
+                "schema": {
+                  "properties": {
+                    "color": {
+                      "type": "string"
+                    },
+                    "dataFactoryName": {
+                      "type": "string"
+                    },
+                    "message": {
+                      "type": "string"
+                    },
+                    "path": {
+                      "type": "string"
+                    },
+                    "pipelineName": {
+                      "type": "string"
+                    },
+                    "pipelineRunId": {
+                      "type": "string"
+                    },
+                    "time": {
+                      "type": "string"
+                    },
+                    "title": {
+                      "type": "string"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "actions": {
+            "Initialize_Message_Body": {
+              "runAfter": {},
+              "type": "InitializeVariable",
+              "inputs": {
+                "variables": [
+                  {
+                    "name": "body",
+                    "type": "string",
+                    "value": "<hr/>\n<h2  style ='color:@{triggerBody()?['color']}'>@{triggerBody()?['pipelineName']} execution  @{if(equals(triggerBody()?['color'],'Green'),' successfully.',' failed.')}\n</h2>\nData Factory Name:<b> @{triggerBody()?['dataFactoryName']}</b></br>\nPipeline Name:<b> @{triggerBody()?['pipelineName']}</b></br>\nPipeline Run Id:<b> @{triggerBody()?['pipelineRunId']}</b></br>\nErrors :<b> @{triggerBody()?['message']}</b></br>\nTime:<b> @{triggerBody()?['time']}</b></br>\n<hr/>\n"
+                  }
+                ]
+              }
+            },
+            "Send_email_(V2)_-_Send_Email": {
+              "runAfter": {
+                "Initialize_Message_Body": [
+                  "Succeeded"
+                ]
+              },
+              "type": "ApiConnection",
+              "inputs": {
+                "body": {
+                  "Body": "<p>@{variables('body')}</p>",
+                  "Cc": "meetalpa@gmail.com",
+                  "Subject": "@triggerBody()?['title']",
+                  "To": "meetalpa@gmail.com"
+                },
+                "host": {
+                  "connection": {
+                    "name": "@parameters('$connections')['gmail']['connectionId']"
+                  }
+                },
+                "method": "post",
+                "path": "/v2/Mail"
+              }
+            }
+          },
+          "outputs": {}
+        },
+        "parameters": {
+          "$connections": {
+            "value": {
+              "gmail": {
+                "connectionId": "[parameters('connections_gmail_externalid')]",
+                "connectionName": "gmail",
+                "id": "/subscriptions/01debfb8-acc7-4607-855c-56bb0422e8d7/providers/Microsoft.Web/locations/uksouth/managedApis/gmail"
+              }
+            }
+          }
+        }
+      }
+    }
+  ]
+}
