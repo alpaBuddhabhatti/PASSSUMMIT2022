@@ -28,6 +28,6 @@ For Demos, First you need to create Main Azure Resources such as:
  1. file-in ( *.jpg & *.csv)
  2. input container (Having .Jpg files)
  3. output container (having resized jpg files automatically by Azure Function as soon as jpg file arrives in input container)
- 4. Also, you find Logic Apps ARM templates and Parameters template(Json file)
- 5. Create Azure Function App projects using Visual studio 2019 or Visual code. Azure Function code in (2 C# file having Azure Functions). In your solution you need to add .sdk for Blob bindings.
+ 4. Also, Create Logic Apps.(you find Logic Apps ARM templates and Parameters template(Json file))
+ 5. Create Azure Function App projects using Visual studio 2019 or Visual code. Azure Function code in (2 C# file having Azure Functions). In your solution you need to add .sdk for Blob bindings. Also Deploy Azure fucntions to Azure.
     
