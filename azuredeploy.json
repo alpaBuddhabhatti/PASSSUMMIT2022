@@ -112,7 +112,7 @@
               "gmail": {
                 "connectionId": "[parameters('connections_gmail_externalid')]",
                 "connectionName": "gmail",
-                "id": "/subscriptions/01debfb8-acc7-4607-855c-56bb0422e8d7/providers/Microsoft.Web/locations/uksouth/managedApis/gmail"
+                "id": "/subscriptions/(YOUR SUBSCRIPTION NEED TO GO HERE/providers/Microsoft.Web/locations/uksouth/managedApis/gmail"
               }
             }
           }
