@@ -19,7 +19,7 @@ For Demos, First you need to create Main Azure Resources such as:
  
  Also Add secret to Key Vault for Azure SQL Database(Connection Key), Azure Storage Account(Access Key) and Azure Functions(Function Key)
  
- Also Make sure Data Factory has contributon access in Azure Storage Account.
+ Also Make sure Data Factory has Data contributon access in Azure Storage Account.
  
  Finally, make sure you have Container in Azure Storage Account and it has files.
  
